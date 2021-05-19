@@ -35,6 +35,29 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
+// Approach 2 - Tournament Method (Divide and Conquer)
+// [minNum, maxNum]
+vector<int> minMaxListDnC(vector<int> nums, int low, int high) {
+	// Base Case - if n = 1, both min and max will be first element
+	if (low == high)
+		return {nums[low], nums[low]};
+
+	// If n = 2, return answer in one comparison
+	if (high - 1 == low)
+		return {min(nums[low], nums[high]), max(nums[low], nums[high])};
+
+	// Recursive Case
+	int mid = (low + high) / 2;
+	vector<int> resLeft = minMaxListDnC(nums, low, mid);
+	vector<int> resRight = minMaxListDnC(nums, mid + 1, high);
+	vector<int> resHere = {nums[low], nums[low]};
+
+	// Min and Max of current level
+	resHere[0] = min3(resHere[0], resLeft[0], resRight[0]);
+	resHere[1] = max3(resHere[1], resLeft[1], resRight[1]);
+
+	return resHere;
+}
 
 int main() {
 	blink
@@ -43,7 +66,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n;
-	cin >> n;
-	cout << n * 10;
+	vector<int> nums {10, 23, 43, 123, 11};
+	vector<int> res = minMaxListDnC(nums, 0, 4);
+	cout << res[0] << " " << res[1];
 }
