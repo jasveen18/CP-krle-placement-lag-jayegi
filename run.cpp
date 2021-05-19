@@ -50,7 +50,7 @@ void moveNegNumToStart(vector<int> &nums) {
 		while (nums[high] >= 0 and low < high)
 			high--;
 
-		if (nums[low] > 0 and nums[high] >= 0) {
+		if (nums[low] > 0 and nums[high] < 0) {
 			swap(nums[low], nums[high]);
 			low++, high--;
 		}
