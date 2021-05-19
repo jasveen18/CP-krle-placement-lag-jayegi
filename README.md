@@ -4,7 +4,6 @@
 *Pre-final year CS undergrad @[B.I.T Mesra](bitmesra.ac.in)*
 
 ## Purpose of this repository
-This repo contains of theories and labs programs Database Management System. The level of complexity is for undergraduate students of computer science engineering. 
 This repo contains solution of top 450 Data Structures and Algorithm Questions, curated by [Love Babbar](https://www.youtube.com/channel/UCQHLxxBFrbfdrk1jF0moTpw).
 
 ## Language and IDE Used
