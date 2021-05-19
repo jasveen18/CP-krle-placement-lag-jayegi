@@ -18,3 +18,18 @@ void moveNegNumToStart(vector<int> &nums) {
 		}
 	}
 }
+
+
+// Approach 2 - Quick Sort Parition, we'll parition taking the pivot el as zero
+// Time Complexity - O(N)
+// Space Complexity - O(1)
+void moveNegNumToStartParition(vector<int> &nums) {
+	int j = 0;
+	for (int i = 0; i < n; i++) {
+		if (nums[i] < 0) {
+			if (i != j)
+				swap(nums[i], nums[j]);
+			j++;
+		}
+	}
+}
