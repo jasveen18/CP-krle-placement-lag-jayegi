@@ -35,29 +35,28 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-// Approach 2 - Tournament Method (Divide and Conquer)
-// [minNum, maxNum]
-vector<int> minMaxListDnC(vector<int> nums, int low, int high) {
-	// Base Case - if n = 1, both min and max will be first element
-	if (low == high)
-		return {nums[low], nums[low]};
 
-	// If n = 2, return answer in one comparison
-	if (high - 1 == low)
-		return {min(nums[low], nums[high]), max(nums[low], nums[high])};
+// Approach 1 - Using 2 pointers
+// Time Complexity - O(N)
+// Space Complexity - O(1)
+void moveNegNumToStart(vector<int> &nums) {
+	int n = nums.size();
 
-	// Recursive Case
-	int mid = (low + high) / 2;
-	vector<int> resLeft = minMaxListDnC(nums, low, mid);
-	vector<int> resRight = minMaxListDnC(nums, mid + 1, high);
-	vector<int> resHere = {nums[low], nums[low]};
+	int low = 0, high = n - 1;
+	while (low < high) {
+		while (nums[low] < 0 and low < high)
+			low++;
 
-	// Min and Max of current level
-	resHere[0] = min3(resHere[0], resLeft[0], resRight[0]);
-	resHere[1] = max3(resHere[1], resLeft[1], resRight[1]);
+		while (nums[high] >= 0 and low < high)
+			high--;
 
-	return resHere;
+		if (nums[low] > 0 and nums[high] >= 0) {
+			swap(nums[low], nums[high]);
+			low++, high--;
+		}
+	}
 }
+
 
 int main() {
 	blink
@@ -66,7 +65,17 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	vector<int> nums {10, 23, 43, 123, 11};
-	vector<int> res = minMaxListDnC(nums, 0, 4);
-	cout << res[0] << " " << res[1];
+	vector<int> nums {10, 23, -43, -123, 11};
+
+	for (auto n : nums) {
+		cout << n << " ";
+	}
+	cout << endl;
+
+	moveNegNumToStart(nums);
+
+	for (auto n : nums) {
+		cout << n << " ";
+	}
+	cout << endl;
 }
