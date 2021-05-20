@@ -21,7 +21,7 @@ int findDuplicate(vector<int>& nums) {
 
 // Approach 2 - Using a set (hashmap) to check if the element is already there.
 // Time Complexity - O(N)
-// Space Complexity - O(1)
+// Space Complexity - O(N)
 int findDuplicate(vector<int> &nums) {
 	set<int> elements;
 	for (int i = 0; i < nums.size(); i++) {
@@ -32,6 +32,30 @@ int findDuplicate(vector<int> &nums) {
 			return nums[i];
 		}
 	}
+}
+
+
+// Approach 3 - Floyd Warshall Algorithm
+// Time Complexity - O(N)
+// Space Complexity - O(1)
+int findDuplicate(vector<int> &nums) {
+	int tortoise = nums[0];
+	int hare = nums[0];
+
+	// Find the intersection point of two runners.
+	while (tortoise != hare) {
+		tortoise = nums[tortoise];
+		hare = nums[nums[hare]];
+	}
+
+	// Find the start of the loop, that is our repeated element
+	tortoise = nums[0];
+	while (tortoise != hare) {
+		tortoise = nums[tortoise];
+		hare = nums[hare];
+	}
+
+	return hare;
 }
 
 
