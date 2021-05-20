@@ -19,6 +19,21 @@ int findDuplicate(vector<int>& nums) {
 }
 
 
+// Approach 2 - Using a set (hashmap) to check if the element is already there.
+// Time Complexity - O(N)
+// Space Complexity - O(1)
+int findDuplicate(vector<int> &nums) {
+	set<int> elements;
+	for (int i = 0; i < nums.size(); i++) {
+		// If not present, add to set
+		if (find(elements.begin(), elements.end(), nums[i]) == elements.end()) {
+			elements.add(nums[i])
+		} else { // If already present, this is the duplicate element
+			return nums[i];
+		}
+	}
+}
+
 
 
 
