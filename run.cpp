@@ -36,54 +36,51 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-class Solution {
-public:
-	vector<long long> mergeSort(vector<long long> arr, long long start, long long end, long long int &count) {
-		// If there is any element to sort
-		if (start < end) {
-			int mid = (start + end) / 2;
+void mergeSortCount(long long arr[], long long start, long long end, long long int &count) {
+	if (start < end) {
+		long long int mid = (start + end) / 2;
 
-			// Recursive calls
-			vector<long long> left = mergeSort(arr, start, mid, count);
-			vector<long long> right = mergeSort(arr, mid + 1, end, count);
+		// Recursive function on two halves
+		mergeSortCount(arr, start, mid, count);
+		mergeSortCount(arr, mid + 1, end, count);
 
-			// Merge operation
-			int i = 0, j = 0, k = 0;
-			while (i < left.size() and j < right.size()) {
-				if (left[i] > right[j]) {
-					count++;
-					cout << left[i] << " " << right[j] << endl;
+		// Merge Function
+		long long i = 0, j = mid + 1, k = 0;
+		long long space[end - start + 1];
 
-					arr[k++] = right[j++];
-				} else {
-					arr[k++] = left[i++];
-				}
+		while (i <= mid and j <= end) {
+			if (arr[i] > arr[j]) {
+				count += mid - i + 1;
+				space[k++] = arr[j++];
+			} else {
+				space[k++] = arr[i++];
 			}
-
-			while (i < left.size())
-				arr[k++] = left[i++];
-			while (j < right.size())
-				arr[k++] = right[j++];
 		}
 
-		return arr;
+		// Add the left-over elements
+		while (i <= mid) {
+			space[k++] = arr[i++];
+		}
+
+		while (j <= end) {
+			space[k++] = arr[j++];
+		}
+
+		for (int x = start; x <= end; x++) {
+			arr[x] = space[x];
+		}
 	}
 
+	return;
+}
 
-	// arr[]: Input Array
-	// N : Size of the Array arr[]
-	// Function to count inversions in the array.
-	long long int inversionCount(long long arr[], long long N)
-	{
-		long long int countInversions = 0;
-		vector<long long> myarr(arr, arr + N);
 
-		mergeSort(myarr, 0, N - 1, countInversions);
-		return countInversions;
-	}
-
-};
-
+// Inversion count function to use merge sort to find count inversions
+long long int inversionCount(long long arr[], long long N) {
+	long long int countInv = 0;
+	mergeSortCount(arr, 0, N - 1, countInv);
+	return countInv;
+}
 
 int main() {
 	blink
@@ -103,8 +100,7 @@ int main() {
 		for (long long i = 0; i < N; i++) {
 			cin >> A[i];
 		}
-		Solution obj;
-		cout << obj.inversionCount(A, N) << endl;
+		cout << inversionCount(A, N) << endl;
 	}
 
 	return 0;
