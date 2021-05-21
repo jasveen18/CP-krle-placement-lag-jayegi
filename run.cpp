@@ -36,50 +36,24 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-void mergeSortCount(long long arr[], long long start, long long end, long long int &count) {
-	if (start < end) {
-		long long int mid = (start + end) / 2;
+bool find3Numbers(int A[], int n, int X) {
+	sort(A, A + n);
 
-		// Recursive function on two halves
-		mergeSortCount(arr, start, mid, count);
-		mergeSortCount(arr, mid + 1, end, count);
-
-		// Merge Function
-		long long i = 0, j = mid + 1, k = 0;
-		long long space[end - start + 1];
-
-		while (i <= mid and j <= end) {
-			if (arr[i] > arr[j]) {
-				count += mid - i + 1;
-				space[k++] = arr[j++];
+	for (int i = 0; i < n - 2; i++) {
+		int start = i + 1, end = n - 1;
+		while (start < end) {
+			int sumHere = A[i] + A[start] + A[end];
+			if (sumHere == X) {
+				return true;
+			} else if (sumHere > X) {
+				end--;
 			} else {
-				space[k++] = arr[i++];
+				start++;
 			}
-		}
-
-		// Add the left-over elements
-		while (i <= mid) {
-			space[k++] = arr[i++];
-		}
-
-		while (j <= end) {
-			space[k++] = arr[j++];
-		}
-
-		for (int x = start; x <= end; x++) {
-			arr[x] = space[x];
 		}
 	}
 
-	return;
-}
-
-
-// Inversion count function to use merge sort to find count inversions
-long long int inversionCount(long long arr[], long long N) {
-	long long int countInv = 0;
-	mergeSortCount(arr, 0, N - 1, countInv);
-	return countInv;
+	return false;
 }
 
 int main() {
@@ -89,18 +63,17 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	long long T;
+	int T;
 	cin >> T;
-
-	while (T--) {
-		long long N;
-		cin >> N;
-
-		long long A[N];
-		for (long long i = 0; i < N; i++) {
+	while (T--)
+	{
+		int n, X;
+		cin >> n >> X;
+		int i, A[n];
+		for (i = 0; i < n; i++)
 			cin >> A[i];
-		}
-		cout << inversionCount(A, N) << endl;
+		// Solution ob;
+		cout <<  find3Numbers(A, n, X) << endl;
 	}
 
 	return 0;
