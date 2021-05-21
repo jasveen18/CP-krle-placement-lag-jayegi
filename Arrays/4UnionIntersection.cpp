@@ -73,7 +73,7 @@ int doIntersection(int a[], int n, int b[], int m) {
 
         // If same elements, push to the array
         if (a[i] == b[j]) {
-            unionArr.push_back(a[i]);
+            intersectionArr.push_back(a[i]);
             i++; j++;
         } else if (a[i] > b[j]) {
             j++;
