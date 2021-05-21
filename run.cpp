@@ -36,26 +36,53 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-// Approach 1 - Using 2 pointers
-// Time Complexity - O(N)
-// Space Complexity - O(1)
-void moveNegNumToStart(vector<int> &nums) {
-	int n = nums.size();
+class Solution {
+public:
+	vector<long long> mergeSort(vector<long long> arr, long long start, long long end, long long int &count) {
+		// If there is any element to sort
+		if (start < end) {
+			int mid = (start + end) / 2;
 
-	int low = 0, high = n - 1;
-	while (low < high) {
-		while (nums[low] < 0 and low < high)
-			low++;
+			// Recursive calls
+			vector<long long> left = mergeSort(arr, start, mid, count);
+			vector<long long> right = mergeSort(arr, mid + 1, end, count);
 
-		while (nums[high] >= 0 and low < high)
-			high--;
+			// Merge operation
+			int i = 0, j = 0, k = 0;
+			while (i < left.size() and j < right.size()) {
+				if (left[i] > right[j]) {
+					count++;
+					cout << left[i] << " " << right[j] << endl;
 
-		if (nums[low] > 0 and nums[high] < 0) {
-			swap(nums[low], nums[high]);
-			low++, high--;
+					arr[k++] = right[j++];
+				} else {
+					arr[k++] = left[i++];
+				}
+			}
+
+			while (i < left.size())
+				arr[k++] = left[i++];
+			while (j < right.size())
+				arr[k++] = right[j++];
 		}
+
+		return arr;
 	}
-}
+
+
+	// arr[]: Input Array
+	// N : Size of the Array arr[]
+	// Function to count inversions in the array.
+	long long int inversionCount(long long arr[], long long N)
+	{
+		long long int countInversions = 0;
+		vector<long long> myarr(arr, arr + N);
+
+		mergeSort(myarr, 0, N - 1, countInversions);
+		return countInversions;
+	}
+
+};
 
 
 int main() {
@@ -65,17 +92,21 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	vector<int> nums {10, 23, -43, -123, 11};
+	long long T;
+	cin >> T;
 
-	for (auto n : nums) {
-		cout << n << " ";
+	while (T--) {
+		long long N;
+		cin >> N;
+
+		long long A[N];
+		for (long long i = 0; i < N; i++) {
+			cin >> A[i];
+		}
+		Solution obj;
+		cout << obj.inversionCount(A, N) << endl;
 	}
-	cout << endl;
 
-	moveNegNumToStart(nums);
-
-	for (auto n : nums) {
-		cout << n << " ";
-	}
-	cout << endl;
+	return 0;
 }
+
