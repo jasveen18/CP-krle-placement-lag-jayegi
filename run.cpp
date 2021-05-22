@@ -36,30 +36,39 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-int findCountMerge(vector<int> arr) {
-	int n = arr.size();
+void rearrangeArr(int arr[], int n) {
+	// Sort the array
+	sort(arr, arr + n);
 
-	int start = 0, end = n - 1;
-	int operations = 0;
-
-	while (start <= end) {
-		// If both element are same
-		if (arr[start] == arr[end]) {
-			start++; end--;
-		} else if (arr[start] > arr[end]) {
-			end--;
-			arr[end] += arr[end + 1];
-			operations++;
-		} else {
-			start++;
-			arr[start] += arr[start - 1];
-			operations++;
-		}
+	// Get the count of element
+	int countPos = 0, countNeg = 0;
+	for (int i = 0; i < n; i++) {
+		if (arr[i] < 0)
+			countNeg++;
+		else
+			countPos++;
 	}
 
-	return operations;
-}
+	// Take care of positive positions
+	int start = 1, end = n - 1;
+	while (start <= 2 * min(countPos, countNeg)) {
+		if (arr[start] < 0) {
+			swap(arr[start], arr[end]);
+		}
+		start += 2;
+	}
 
+	// Take care of negative positions
+	start = 0;
+	while (start <= 2 * min(countPos, countNeg)) {
+		if (arr[start] > 0) {
+			swap(arr[start], arr[end]);
+		}
+		start += 2;
+	}
+
+	return;
+}
 
 int main() {
 	blink
@@ -68,19 +77,14 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int t, n, k;
-	// cin >> t;
-	t = 1;
-	while (t--)
-	{
-		cin >> n;
-		int arr[n];
-		for (int i = 0; i < n; i++)
-			cin >> arr[i];
-		cin >> k;
-		cout << minSwap(arr, n, k) << "\n";
+	int arr[] = { -5, -2, 5, 2, 4, 7, 1, 8, 0, -8 };
+	int n = sizeof(arr) / sizeof(arr[0]);
+
+	rearrangeArr(arr, n);
+	for (int i = 0; i < n; i++) {
+		cout << arr[i] << " ";
 	}
-	return 0;
+	cout << endl;
 
 	return 0;
 }
