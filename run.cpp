@@ -36,6 +36,33 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
+void printCommonElements(vector<vector<int>> &matrix, int n, int m) {
+	unordered_map<int, int> seenElements;
+
+	// Put all the elements of first row.
+	for (int i = 0; i < m; i++) {
+		seenElements[matrix[0][i]]++;
+	}
+
+	// Start checking for next rows
+	for (int i = 1; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (seenElements[matrix[i][j]] == i) {
+				seenElements[matrix[i][j]]++;
+			}
+		}
+	}
+
+	for (auto el : seenElements) {
+		if (el.second == n) {
+			cout << el.first << " ";
+		}
+
+		// cout << "Ignore: " << el.first << " " << el.second << endl;
+	}
+}
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -58,14 +85,8 @@ int main() {
 		cout << endl;
 	}
 	cout << endl;
+	printCommonElements(matrix, r, c);
 
-	spiralPrint(matrix, r, c);
-	cout << endl;
-	vector<int> res = spirallyTraverse(matrix, r, c);
-	for (auto num : res) {
-		cout << num << " ";
-	}
-	cout << endl;
 
 
 	return 0;
