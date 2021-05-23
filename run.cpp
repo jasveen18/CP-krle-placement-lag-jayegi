@@ -36,39 +36,85 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-void rearrangeArr(int arr[], int n) {
-	// Sort the array
-	sort(arr, arr + n);
+vector<int> spirallyTraverse(vector<vector<int> > matrix, int r, int c)
+{
+	vector<int> arr(r * c, 0);
+	int i = 0;
+	int sc = 0, ec = c - 1, sr = 0, er = r - 1;
+	int rowLen = r, colLen = c;
 
-	// Get the count of element
-	int countPos = 0, countNeg = 0;
-	for (int i = 0; i < n; i++) {
-		if (arr[i] < 0)
-			countNeg++;
-		else
-			countPos++;
-	}
-
-	// Take care of positive positions
-	int start = 1, end = n - 1;
-	while (start <= 2 * min(countPos, countNeg)) {
-		if (arr[start] < 0) {
-			swap(arr[start], arr[end]);
+	// Traverse the matrix
+	while (sc <= ec and sr <= er) {
+		// Left to right
+		for (int c = sc; c <= ec; c++) {
+			arr[i++] = matrix[sr][c];
 		}
-		start += 2;
-	}
+		sr++;
 
-	// Take care of negative positions
-	start = 0;
-	while (start <= 2 * min(countPos, countNeg)) {
-		if (arr[start] > 0) {
-			swap(arr[start], arr[end]);
+		// Top to bottom
+		for (int r = sr; r <= er; r++) {
+			arr[i++] = matrix[r][ec];
 		}
-		start += 2;
+		ec--;
+
+		if (sr <= er) {
+			// Right to left
+			for (int c = ec; c >= sc; c--) {
+				arr[i++] = matrix[er][c];
+			}
+			er--;
+		}
+
+		if (sc <= ec) {
+			// Bottom to top
+			for (int r = er; r >= sr; r--) {
+				arr[i++] = matrix[r][sc];
+			}
+			sc++;
+		}
 	}
 
-	return;
+	return arr;
 }
+
+void spiralPrint(vector<vector<int> > arr, int m, int n) {
+	int startRow = 0;
+	int startCol = 0;
+	int endRow = m - 1;
+	int endCol = n - 1;
+
+	// Stop conditions
+	while (startRow <= endRow and startCol <= endCol) {
+		// First Row
+		for (int i = startCol; i <= endCol; i++) {
+			cout << arr[startRow][i] << " ";
+		}
+		startRow++;
+
+		// End Column
+		for (int i = startRow; i <= endRow; i++) {
+			cout << arr[i][endCol] << " ";
+		}
+		endCol--;
+
+		// Bottom Row
+		if (endRow >= startRow) {
+			for (int i = endCol; i >= startCol; i--) {
+				cout << arr[endRow][i] << " ";
+			}
+			endRow--;
+		}
+
+		// First Column
+		if (endCol >= startCol) {
+			for (int i = endRow; i >= startRow; i--) {
+				cout << arr[i][startCol] << " ";
+			}
+			startCol++;
+		}
+	}
+}
+
 
 int main() {
 	blink
@@ -77,14 +123,30 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int arr[] = { -5, -2, 5, 2, 4, 7, 1, 8, 0, -8 };
-	int n = sizeof(arr) / sizeof(arr[0]);
+	int r, c; cin >> r >> c;
+	vector<vector<int> > matrix(r, vector<int> (c, 0));
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			cin >> matrix[i][j];
+		}
+	}
 
-	rearrangeArr(arr, n);
-	for (int i = 0; i < n; i++) {
-		cout << arr[i] << " ";
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
 	}
 	cout << endl;
+
+	spiralPrint(matrix, r, c);
+	cout << endl;
+	vector<int> res = spirallyTraverse(matrix, r, c);
+	for (auto num : res) {
+		cout << num << " ";
+	}
+	cout << endl;
+
 
 	return 0;
 }
