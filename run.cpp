@@ -36,6 +36,22 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
+void printSubSeq(string s, string res) {
+	// Base Case
+	if (s.size() == 0) {
+		cout << res << endl;
+		return;
+	}
+
+	// Recursive Case
+	// Include the current element
+	printSubSeq(s.substr(1), res + s[0]);
+
+	// Exclude the current element
+	printSubSeq(s.substr(1), res);
+}
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -43,23 +59,14 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int r, c; cin >> r >> c;
-	vector<vector<int> > matrix(r, vector<int> (c, 0));
-	for (int i = 0; i < r; i++) {
-		for (int j = 0; j < c; j++) {
-			cin >> matrix[i][j];
-		}
-	}
 
-	for (int i = 0; i < r; i++) {
-		for (int j = 0; j < c; j++) {
-			cout << matrix[i][j] << " ";
-		}
-		cout << endl;
-	}
-	cout << endl;
-	printCommonElements(matrix, r, c);
+	string in1 = "abc";
+	string res = "";
+	printSubSeq(in1, res);
 
+	// string in2 = "aaa";
+	// string res = "";
+	// printSubSeq(in2, res, 0);
 
 
 	return 0;
