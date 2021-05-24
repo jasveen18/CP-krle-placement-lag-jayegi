@@ -36,24 +36,21 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-void printSubSeq(string s) {
-	int numOfSubSeq = pow(2, s.size());
-	for (int i = 1; i < numOfSubSeq; i++) {
-		int idx = 0;
-		int num = i;
-
-		// Print the digits which have 1 at its binary representation
-		while (num) {
-			if (num & 1) {
-				cout << s[idx];
-			}
-			num = num / 2;
-			idx++;
-		}
-		cout << endl;
+void getPermutations(string s, int idx, set<string> &res) {
+	// Base Case
+	if (idx == s.size()) {
+		res.insert(s);
+		return;
 	}
 
-	return;
+	// Recursive Case
+	for (int i = idx; i < s.size(); i++) {
+		swap(s[i], s[idx]);
+		getPermutations(s, idx + 1, res);
+
+		// Backtrack
+		swap(s[i], s[idx]);
+	}
 }
 
 int main() {
@@ -65,12 +62,13 @@ int main() {
 
 
 	string in1 = "abc";
-	string res = "";
-	printSubSeq(in1);
 
-	// string in2 = "aaa";
-	// string res = "";
-	// printSubSeq(in2, res, 0);
+	set<string> res;
+	getPermutations(in1, 0, res);
+	for (auto st : res) {
+		cout << st << " ";
+	}
+	cout << endl;
 
 
 	return 0;

@@ -1,7 +1,1 @@
-a
-b
-ab
-c
-ac
-bc
-abc
+abc acb bac bca cab cba 
