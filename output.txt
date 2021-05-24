@@ -1,8 +1,7 @@
-abc
-ab
-ac
 a
-bc
 b
+ab
 c
-
+ac
+bc
+abc
