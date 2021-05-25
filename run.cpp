@@ -36,31 +36,6 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-string generateKeypadSequences(string s) {
-	string str[] = {"2", "22", "222",
-	                "3", "33", "333",
-	                "4", "44", "444",
-	                "5", "55", "555",
-	                "6", "66", "666",
-	                "7", "77", "777", "7777",
-	                "8", "88", "888",
-	                "9", "99", "999", "9999"
-	               };
-
-	string resKeypad = "";
-	for (int i = 0; i < s.size(); i++) {
-		if (s[i] == ' ')
-			resKeypad += '0';
-		else {
-			int position = s[i] - 'A';
-			resKeypad += str[position];
-		}
-	}
-
-	return resKeypad;
-}
-
-
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
