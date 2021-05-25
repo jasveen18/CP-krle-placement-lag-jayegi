@@ -35,6 +35,25 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
+void printAllSentences(vector<vector<string>> data, int idx, string output) {
+	// Base Case
+	if (idx == data.size()) {
+		cout << output << endl;
+		return;
+	}
+
+	string retainOutputYet = output;
+	// Recursive Case
+	for (int i = 0; i < data[idx].size(); i++) {
+		output += " " + data[idx][i];
+		printAllSentences(data, idx + 1, output);
+		output = retainOutputYet;
+	}
+
+	return;
+}
+
+
 
 int main() {
 	blink
@@ -44,9 +63,12 @@ int main() {
 #endif
 
 
-	string s = "HELLO WORLD";
+	vector<vector<string>> data{{"you", "we"},
+		{"have", "are"},
+		{"sleep", "eat", "drink"}};
 
-	cout << generateKeypadSequences(s);
+	// string
+	printAllSentences(data, 0, "");
 	return 0;
 }
 
