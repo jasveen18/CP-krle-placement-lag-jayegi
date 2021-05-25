@@ -36,29 +36,26 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-int editDistance(string word1, string word2) {
-	int m = word1.size();
-	int n = word2.size();
-
-	vector<vector<int>> distanceDP(m + 1, vector<int> (n + 1, 0));
-	for (int i = 1; i <= m; i++)
-		distanceDP[i][0] = i;
-	for (int j = 1; j <= n; j++)
-		distanceDP[0][j] = j;
-
-	// DP logic
-	for (int i = 1; i <= m; i++) {
-		for (int j = 1; j <= n; j++) {
-			if (word1[i - 1] == word2[j - 1]) {
-				distanceDP[i][j] = distanceDP[i - 1][j - 1];
-			} else {
-				distanceDP[i][j] = 1 + min3(distanceDP[i - 1][j - 1], distanceDP[i][j - 1], distanceDP[i - 1][j]);
+vector<string> letters{"", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ"};
+string generateKeypadSequences(string s) {
+	string resKeypad = "";
+	for (int i = 0; i < s.size(); i++) {
+		if (s[i] == ' ')
+			resKeypad += '0';
+		else {
+			for (int j = 0; j < letters.size(); j++) {
+				for (int k = 0; k < letters[j].size(); k++) {
+					if (s[i] == letters[j][k])
+						for (int l = 0; l <= k; l++)
+							resKeypad += to_string((j + 1));
+				}
 			}
 		}
 	}
 
-	return distanceDP[m][n];
+	return resKeypad;
 }
+
 
 int main() {
 	blink
@@ -68,12 +65,9 @@ int main() {
 #endif
 
 
-	string s, t;
-	cin >> s >> t;
+	string s = "HELLO WORLD";
 
-	cout << editDistance(s, t);
-
-
+	cout << generateKeypadSequences(s);
 	return 0;
 }
 
