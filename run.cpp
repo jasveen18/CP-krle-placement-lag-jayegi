@@ -36,50 +36,6 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-bool isSafe() {
-
-}
-
-bool isValid(int i, int j, vector<vector<int>> grid) {
-	if (i < 0 or j < 0 or i >= grid.size() or j >= grid[0].size())
-		return false;
-
-	return true;
-}
-
-
-void markUnsafeTiles(vector<vector<int>> &grid) {
-	for (int i = 0; i < grid.size(); i++) {
-		for (int j = 0; j < grid[i].size(); j++) {
-			// If we have a landmine here, we will mark the neighboring tiles as unsafe
-			if (grid[i][j] == 0) {
-				// Up
-				if (isValid(i - 1, j, grid))
-					grid[i - 1][j] = -1;
-				// Down
-				if (isValid(i + 1, j, grid))
-					grid[i + 1][j] = -1;
-				// Left
-				if (isValid(i, j - 1, grid))
-					grid[i][j - 1] = -1;
-				// Right
-				if (isValid(i, j + 1, grid))
-					grid[i][j + 1] = -1;
-			}
-		}
-	}
-
-	// Now mark all the unsafe areas
-	for (int i = 0; i < grid.size(); i++) {
-		for (int j = 0; j < grid[i].size(); j++) {
-			if (grid[i][j] == -1)
-				grid[i][j] = 0;
-		}
-	}
-
-	return;
-}
-
 
 void findShortestPath(vector<vector<int>> &grid, int i, int j, int currDistance, int &minDistance) {
 	// Base Case
@@ -116,7 +72,7 @@ vector<vector<int> > combinationSum(vector<int> &A, int B) {
 	int currSum = 0;
 	vector<int> currVec;
 
-	getAllCombinatinSums(A, B, currSum, currVec, res, 0);
+	// getAllCombinatinSums(A, B, currSum, currVec, res, 0);
 
 	// Do the computations
 	set<vector<int>> result(res.begin(), res.end());
@@ -131,6 +87,90 @@ vector<vector<int> > combinationSum(vector<int> &A, int B) {
 }
 
 
+
+bool isSafeForQueen(vector<vector<int>> &board, int i, int j) {
+	// Check the column. Row pe toh ni hoga.
+	for (int row = 0; row < i; row++) {
+		if (board[row][j])
+			return false;
+	}
+
+	// Check for left diagonal
+	int x = i;
+	int y = j;
+	while (x >= 0 and y >= 0) {
+		if (board[x][y])
+			return false;
+
+		x--; y--;
+	}
+
+	// Check for right diagonal
+	x = i;
+	y = j;
+	while (x >= 0 and y < board.size()) {
+		if (board[x][y])
+			return false;
+
+		x--; y++;
+	}
+
+
+	return true; // If all conditions don't match.
+}
+
+
+
+bool printAllNQueens(int n, vector<vector<int>> &board, int i) {
+	// Base Case when we have arranged the board
+	if (i == n) {
+
+		// Print the board
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (board[i][j] == 1)
+					cout << "Q";
+				else
+					cout << ".";
+			}
+			cout << endl;
+		}
+		cout << endl;
+
+		return false; // To find further configurations
+	}
+
+	// Recursive Case
+	for (int j = 0; j < n; j++) {
+		// Place queen at i, j if it is safe.
+		if (isSafeForQueen(board, i, j)) {
+			board[i][j] = 1;
+
+			// Run further
+			bool nextQueensRakhPaaye = printAllNQueens(n, board, i + 1);
+			if (nextQueensRakhPaaye)
+				return true;
+
+			// If not, backtrack
+			board[i][j] = 0;
+		}
+	}
+
+	// We couldn't place the queen here because of our previous configs
+	return false;
+}
+
+
+void driverPrintQueens(int n) {
+	vector<vector<int>> board(n, vector<int>(n));
+
+	// Arrange the board and print when final config
+	printAllNQueens(n, board, 0);
+	return;
+}
+
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -139,20 +179,22 @@ int main() {
 #endif
 
 
-	int n;
-	cin >> n;
-	vector<int> arr(n);
-	for (int i = 0; i < n; i++) {
-		cin >> arr[i];
-	}
-	int a; cin >> a;
+	// int n;
+	// cin >> n;
+	// vector<int> arr(n);
+	// for (int i = 0; i < n; i++) {
+	// 	cin >> arr[i];
+	// }
+	// int a; cin >> a;
 
-	vector<vector<int>> res = combinationSum(arr, a);
-	for (int i = 0; i < res.size(); i++) {
-		for (int j = 0; j < res[i].size(); j++) {
-			cout << res[i][j] << " ";
-		}
-		cout << endl;
-	}
+	// vector<vector<int>> res = combinationSum(arr, a);
+	// for (int i = 0; i < res.size(); i++) {
+	// 	for (int j = 0; j < res[i].size(); j++) {
+	// 		cout << res[i][j] << " ";
+	// 	}
+	// 	cout << endl;
+	// }
+
+	driverPrintQueens(4);
 }
 
