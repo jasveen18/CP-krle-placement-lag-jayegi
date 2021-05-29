@@ -67,3 +67,15 @@ void findShortestPath(vector<vector<int>> &grid, int i, int j, int currDistance,
 	grid[i][j] = 1;
 	return;
 }
+
+// Driver Function
+int findMinDistance(vector<vector<int>> &grid) {
+	int currDist = 0;
+	int minDist = INT_MAX;
+
+	for (int i = 0; i < grid.size(); i++) {
+		findShortestPath(grid, i, 0, currDistance, minDist);
+	}
+
+	return minDist;
+}
