@@ -35,24 +35,53 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void printAllSentences(vector<vector<string>> data, int idx, string output) {
+bool ratInMaze(vector<vector<int>> &m, int i, int j, string currSeq, vector<string> &res) {
 	// Base Case
-	if (idx == data.size()) {
-		cout << output << endl;
-		return;
+	if (i == m.size() - 1 and j == m[0].size() - 1) {
+		res.push_back(currSeq);
+		return false;
 	}
 
-	string retainOutputYet = output;
-	// Recursive Case
-	for (int i = 0; i < data[idx].size(); i++) {
-		output += " " + data[idx][i];
-		printAllSentences(data, idx + 1, output);
-		output = retainOutputYet;
-	}
+	// If rat goes out of grid
+	if (i < 0 or j < 0 or i >= m.size() or j >= m[0].size())
+		return false;
 
-	return;
+	// If rat encounters an obstacle
+	if (m[i][j] == 0)
+		return false;
+
+	// If we are going further in this path, mark as visited
+	m[i][j] = 0;
+	// cout << i << " " << j << endl;
+	bool up = ratInMaze(m, i - 1, j, currSeq + 'U', res);
+	bool down = ratInMaze(m, i + 1, j, currSeq + 'D', res);
+	bool left = ratInMaze(m, i, j - 1, currSeq + 'L', res);
+	bool right = ratInMaze(m, i, j + 1, currSeq + 'R', res);
+
+	// If we find a path
+	if (up or down or left or right)
+		return true;
+
+	// Backtrack
+	m[i][j] = 1;
+	return false;
 }
 
+
+vector<string> findPath(vector<vector<int>> &m, int n) {
+	string curr = "";
+	vector<string> res;
+
+	// for (int i = 0; i < m.size(); i++) {
+	// 	for (int j = 0; j < m[0].size(); j++) {
+	// 		cout << m[i][j] << " ";
+	// 	}
+	// 	cout << endl;
+	// }
+
+	ratInMaze(m, 0, 0, curr, res);
+	return res;
+}
 
 
 int main() {
@@ -63,12 +92,19 @@ int main() {
 #endif
 
 
-	vector<vector<string>> data{{"you", "we"},
-		{"have", "are"},
-		{"sleep", "eat", "drink"}};
-
-	// string
-	printAllSentences(data, 0, "");
-	return 0;
+	int n;
+	cin >> n;
+	vector<vector<int>> m(n, vector<int> (n, 0));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> m[i][j];
+		}
+	}
+	vector<string> result = findPath(m, n);
+	if (result.size() == 0)
+		cout << -1;
+	else
+		for (int i = 0; i < result.size(); i++) cout << result[i] << " ";
+	cout << endl;
 }
 
