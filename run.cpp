@@ -35,22 +35,46 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-bool generateAllPaths(vector<vector<int>> &m, int i, int j, string currPath, vector<string> &paths) {
-	if (i == m.size() - 1 and j == m[0].size() - 1) {
-		currPath += to_string(m[i][j]);
-		paths.push_back(currPath);
+bool isPossibleEqualPartition(int arr[], int n, int i, int currSum, int totalSum) {
+	// Base Cases
+	// We can divide the array into 2 parts
+	if (currSum == totalSum / 2)
+		return true;
+
+	// We can't divide with this configuration
+	if (currSum > totalSum / 2)
 		return false;
+
+	// Array is exhausted
+	if (i == n)
+		return false;
+
+	// Recursive Cases
+	// Include the current element
+	bool includeCase = isPossibleEqualPartition(arr, n, i + 1, currSum + arr[i], totalSum);
+
+	// Exclude the current element
+	bool excludeCase = isPossibleEqualPartition(arr, n, i + 1, currSum, totalSum);
+
+	// Is this case a valid config?
+	return includeCase or excludeCase;
+}
+
+
+int equalPartition(int N, int arr[]) {
+	int sum = 0;
+	for (int i = 0; i < N; i++) {
+		sum += arr[i];
 	}
 
-	// Out of bound case
-	if (i < 0 or j < 0 or i >= m.size() or j >= m[0].size())
+	// If sum is odd
+	if (sum & 1)
 		return false;
 
-	bool down = printAllPaths(m, i + 1, j, currPath + to_string(m[i][j]), paths);
-	bool right = printAllPaths(m, i, j + 1, currPath + to_string(m[i][j]), paths);
-
-	return down or right;
+	int currSum = 0;
+	return isPossibleEqualPartition(arr, N, 0, currSum, sum);
 }
+
 
 int main() {
 	blink
@@ -62,14 +86,11 @@ int main() {
 
 	int n;
 	cin >> n;
-	vector<vector<int>> m(n, vector<int> (n, 0));
+	int arr[n];
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			cin >> m[i][j];
-		}
+		cin >> arr[i];
 	}
-	string res = "";
-	vector<string> r;
-	printAllPaths(m, 0, 0, res, r);
+
+	cout << equalPartition(n, arr);
 }
 
