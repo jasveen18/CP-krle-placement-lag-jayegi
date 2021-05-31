@@ -35,35 +35,54 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-bool longestPathWithHurdles(vector<vector<int>> grid, int i, int j, int currRouteLen, int &maxRouteLen) {
+void wordBreakCompute(string &s, int idx, unordered_map<string, int> &isPresent,
+                      string currWord, vector<string> cache, vector<string> &res) {
+
 	// Base Case
-	if (i == grid.size() and j == grid[0].size()) {
-		maxRouteLen = max(maxRouteLen, currRouteLen);
-		return false;
+	if (idx == s.size()) {
+		if (isPresent.find(currWord) != isPresent.end()) {
+			cache.push_back(currWord);
+
+			string temp = "";
+			for (int i = 0; i < cache.size() - 1; i++) {
+				temp += cache[i] + " ";
+			}
+			temp += cache[cache.size() - 1];
+
+			res.push_back(temp);
+			return;
+		} else
+			return;
 	}
 
-	// Out of bounds
-	if (i < 0 or j < 0 or i >= grid.size() or j >= grid[0].size())
-		return false;
+	// Recusive Case
+	// Word present
+	if (isPresent.find(currWord) != isPresent.end()) {
+		// Include it
+		wordBreakCompute(s, idx + 1, isPresent, currWord + s[idx], cache, res);
 
-	// Hurdles or Re-visit
-	if (grid[i][j] == 0)
-		return false;
+		// Exclude it
+		cache.push_back(currWord);
+		wordBreakCompute(s, idx, isPresent, "", cache, res);
+	} else {
+		wordBreakCompute(s, idx + 1, isPresent, currWord + s[idx], cache, res);
+	}
 
-	// Recursive Cases
-	grid[i][j] = 0;
+	return;
+}
 
-	bool d = longestPathWithHurdles(grid, i - 1, j, currRouteLen + 1, maxRouteLen);
-	bool l = longestPathWithHurdles(grid, i, j - 1, currRouteLen + 1, maxRouteLen);
-	bool u = longestPathWithHurdles(grid, i + 1, j, currRouteLen + 1, maxRouteLen);
-	bool r = longestPathWithHurdles(grid, i, j + 1, currRouteLen + 1, maxRouteLen);
 
-	if (d or l or u or r)
-		return true;
+vector<string> wordBreak(int n, vector<string>& dict, string s) {
+	string currWord = "";
+	vector<string> res;
+	vector<string> cache;
 
-	// Backtrack
-	grid[i][j] = 1;
-	return false;
+	unordered_map<string, int> isPresent;
+	for (int i = 0; i < n; i++)
+		isPresent[dict[i]]++;
+
+	wordBreakCompute(s, 0, isPresent, currWord, cache, res);
+	return res;
 }
 
 
@@ -74,13 +93,8 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	vector<string> inp{"1234567", "4551711527", "3435335"};
-	vector<int> k{4, 3, 3};
+	string s = "catsandog";
+	vector<string> dict{"cats", "cat", "and", "sand", "dog"};
 
-	for (int i = 0; i < 3; i++) {
-		string maxNum = inp[i];
-
-		findMaximumBacktracking(inp[i], k[i], 0, 0, maxNum);
-		cout << maxNum << endl;
-	}
+	wordBreak(5, dict, s);
 }
