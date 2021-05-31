@@ -35,39 +35,28 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-bool knightTour(vector<vector<int>> &grid, int i, int j, int blocksFilled) {
+void findMaximumBacktracking(string &str, int k, int idx, int swaps, string &maxNum) {
 	// Base Case
-	if (blocksFilled == grid.size() * grid.size())
-		return true;
-
-	// Check for invalid cases
-	// Out of bound
-	if (i < 0 or j < 0 or i >= grid.size() or j >= grid.size())
-		return false;
-
-	if (grid[i][j] != -1)
-		return false;
-
-	// Recursive Cases
-	// We can move at 8 places
-
-	vector<int> movesX{2, 1, -1, -2, -2, -1, 1, 2};
-	vector<int> movesY{1, 2, 2, 1, -1, -2, -2, -1};
-
-	// Place the knight here
-	grid[i][j] = blocksFilled;
-	bool subProbPossible = false;
-	for (int k = 0; k < 8; k++) {
-		subProbPossible = knightTour(grid, i + movesX[k],
-		                             j + movesY[k], blocksFilled + 1);
-
-		if (subProbPossible)
-			return true;
+	if (swaps == k or idx == str.size()) {
+		// cout << str << " " << maxNum << " " << swaps << endl;
+		if (str > maxNum)
+			maxNum = str;
+		return;
 	}
 
-	// Backtracking
-	grid[i][j] = -1;
-	return false;
+	// Recursive Case
+	for (int i = idx; i < str.size(); i++) {
+		swap(str[i], str[idx]);
+		if (i == idx)
+			findMaximumBacktracking(str, k, idx + 1, swaps, maxNum);
+		else
+			findMaximumBacktracking(str, k, idx + 1, swaps + 1, maxNum);
+
+		// Backtrack
+		swap(str[i], str[idx]);
+	}
+
+	return;
 }
 
 
@@ -79,27 +68,13 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n = 8;
-	vector<vector<int>> grid(n, vector<int> (n, -1));
+	vector<string> inp{"1234567", "4551711527", "3435335"};
+	vector<int> k{4, 3, 3};
 
-	bool possible = knightTour(grid, 0, 0, 0);
+	for (int i = 0; i < 3; i++) {
+		string maxNum = inp[i];
 
-	if (possible) {
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				cout << grid[i][j] << " ";
-			}
-			cout << endl;
-		}
+		findMaximumBacktracking(inp[i], k[i], 0, 0, maxNum);
+		cout << maxNum << endl;
 	}
 }
-
-
-// 0 59 38 33 30 17 8 63
-// 37 34 31 60 9 62 29 16
-// 58 1 36 39 32 27 18 7
-// 35 48 41 26 61 10 15 28
-// 42 57 2 49 40 23 6 19
-// 47 50 45 54 25 20 11 14
-// 56 43 52 3 22 13 24 5
-// 51 46 55 44 53 4 21 12
