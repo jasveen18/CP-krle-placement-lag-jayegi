@@ -35,55 +35,56 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void wordBreakCompute(string &s, int idx, unordered_map<string, int> &isPresent,
-                      string currWord, vector<string> cache, vector<string> &res) {
 
+bool doKPartitions(int a[], int n, int idx, vector<vector<int>> &nums) {
 	// Base Case
-	if (idx == s.size()) {
-		if (isPresent.find(currWord) != isPresent.end()) {
-			cache.push_back(currWord);
+	if (idx == n) {
+		int sumHere = 0;
+		for (int i = 0; i < nums[0].size(); i++)
+			sumHere += nums[0][i];
 
-			string temp = "";
-			for (int i = 0; i < cache.size() - 1; i++) {
-				temp += cache[i] + " ";
+		int prevSum = sumHere;
+
+		bool isPossible = true;
+		for (int i = 1; i < nums.size(); i++) {
+			sumHere = 0;
+
+			for (int j = 0; j < nums[i].size(); j++) {
+				sumHere += nums[i][j];
 			}
-			temp += cache[cache.size() - 1];
+			if (sumHere != prevSum) {
+				isPossible = false;
+				break;
+			}
+		}
 
-			res.push_back(temp);
-			return;
-		} else
-			return;
+		return isPossible;
 	}
 
-	// Recusive Case
-	// Word present
-	if (isPresent.find(currWord) != isPresent.end()) {
-		// Include it
-		wordBreakCompute(s, idx + 1, isPresent, currWord + s[idx], cache, res);
 
-		// Exclude it
-		cache.push_back(currWord);
-		wordBreakCompute(s, idx, isPresent, "", cache, res);
-	} else {
-		wordBreakCompute(s, idx + 1, isPresent, currWord + s[idx], cache, res);
+	// Recursive Case
+	// Either to include the current element in our kth basket or not.
+	for (int i = 0; i < nums.size(); i++) {
+		nums[i].push_back(a[idx]);
+		bool isPossibleToFit = doKPartitions(a, n, idx + 1, nums);
+
+		if (isPossibleToFit)
+			return true;
+
+		nums[i].pop_back();
 	}
 
-	return;
+	return false;
 }
 
 
-vector<string> wordBreak(int n, vector<string>& dict, string s) {
-	string currWord = "";
-	vector<string> res;
-	vector<string> cache;
+bool isKPartitionPossible(int a[], int n, int k) {
+	vector<vector<int>> nums(k);
+	// cout << nums.size();
 
-	unordered_map<string, int> isPresent;
-	for (int i = 0; i < n; i++)
-		isPresent[dict[i]]++;
-
-	wordBreakCompute(s, 0, isPresent, currWord, cache, res);
-	return res;
+	return doKPartitions(a, n, 0, nums);
 }
+
 
 
 int main() {
@@ -93,8 +94,12 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	string s = "catsandog";
-	vector<string> dict{"cats", "cat", "and", "sand", "dog"};
+	int n = 10;
+	int a[n];
 
-	wordBreak(5, dict, s);
+	for (int i = 0; i < n; i++) {
+		cin >> a[i];
+	}
+
+	cout << isKPartitionPossible(a, n, 2);
 }
