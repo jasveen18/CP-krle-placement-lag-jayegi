@@ -53,6 +53,7 @@ vector<vector<int>> combinationSum(vector<int> &candidates, int target) {
 	vector<int> combination;
 
 	combinationSum(candidates, target, res, combination, 0);
+	return res;
 }
 
 void combinationSum(vector<int> &candidates, int target,
