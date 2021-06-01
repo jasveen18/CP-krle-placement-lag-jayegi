@@ -31,6 +31,7 @@ void findCombinations(vector<int> &a, int targetSum, int currSum,
 vector<vector<int>> combinationSum(vector<int> &a, int b) {
 	vector<vector<int>> res;
 	vector<int> r;
+	sort(a.begin(), a.end());
 	findCombinations(a, b, 0, r, 0, res);
 
 	// Get unique values and sort according to format
@@ -41,4 +42,34 @@ vector<vector<int>> combinationSum(vector<int> &a, int b) {
 	res.erase(unique(res.begin(), res.end()), res.end());
 
 	return res;
+}
+
+
+///////////////////////
+// Efficient Solution
+vector<vector<int>> combinationSum(vector<int> &candidates, int target) {
+	sort(candidates.begin(), candidates.end());
+	vector<vector<int>> res;
+	vector<int> combination;
+
+	combinationSum(candidates, target, res, combination, 0);
+}
+
+void combinationSum(vector<int> &candidates, int target,
+                    vector<vector<int>> &res, vector<int> &combination,
+                    int begin) {
+
+	// Base Case
+	if (!target) {
+		res.push_back(combination);
+		return;
+	}
+
+	for (int i = begin; i<candidates.size() and target >= candidates[i]; i++) {
+		combination.push_back(candidates[i]);
+		combinationSum(candidates, target - candidates[i], res, combination, i);
+		combination.pop_back();
+	}
+
+	return;
 }

@@ -35,50 +35,35 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void findCombinations(vector<int> &a, int targetSum, int currSum,
-                      vector<int> &runningVec, int idx,
-                      vector<vector<int>> &res) {
-	//
-	if (idx == a.size())
-		return;
+void combinationSum(vector<int> &candidates, int target,
+                    vector<vector<int>> &res, vector<int> &combination,
+                    int begin) {
 
 	// Base Case
-	if (currSum == targetSum) {
-		res.push_back(runningVec);
+	if (!target) {
+		res.push_back(combination);
 		return;
 	}
 
-	// Exclude case
-	findCombinations(a, targetSum, currSum, runningVec, idx + 1, res);
-
-	// Include case
-	runningVec.push_back(a[idx]);
-	for (int i = idx; i < a.size(); i++) {
-		if (currSum + a[i] <= targetSum) {
-			findCombinations(a, targetSum, currSum + a[idx], runningVec, i, res);
-		}
+	for (int i = begin; i<candidates.size() and target >= candidates[i]; i++) {
+		combination.push_back(candidates[i]);
+		combinationSum(candidates, target - candidates[i], res, combination, i);
+		combination.pop_back();
 	}
 
-	// Backtrack
-	runningVec.pop_back();
 	return;
 }
 
-
-vector<vector<int>> combinationSum(vector<int> &a, int b) {
+vector<vector<int>> combinationSum(vector<int> &candidates, int target) {
+	sort(candidates.begin(), candidates.end());
 	vector<vector<int>> res;
-	vector<int> r;
-	findCombinations(a, b, 0, r, 0, res);
+	vector<int> combination;
 
-	// Get unique values and sort according to format
-	for (int i = 0; i < res.size(); i++) {
-		sort(res[i].begin(), res[i].end());
-	}
-	sort(res.begin(), res.end());
-	res.erase(unique(res.begin(), res.end()), res.end());
-
+	combinationSum(candidates, target, res, combination, 0);
 	return res;
 }
+
+
 
 int main() {
 	blink
@@ -97,6 +82,13 @@ int main() {
 	}
 	cout << endl;
 
-	combinationSum(inp, 16);
+	vector<vector<int>> res = combinationSum(inp, 6);
+
+	for (int i = 0; i < res.size(); i++) {
+		for (int j = 0; j < res[i].size(); j++)
+			cout << res[i][j] << " ";
+		cout << endl;
+	}
+
 	return 0;
 }
