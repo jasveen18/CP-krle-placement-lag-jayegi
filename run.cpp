@@ -35,54 +35,50 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
+void findCombinations(vector<int> &a, int targetSum, int currSum,
+                      vector<int> &runningVec, int idx,
+                      vector<vector<int>> &res) {
+	//
+	if (idx == a.size())
+		return;
 
-bool doKPartitions(int a[], int n, int currSum, int targetSum,
-                   vector<int> &visited,  int k, int nextIdx) {
-	// Base Case - we were able to fit all the cases
-	if (k == 0)
-		return true;
-
-	// Base Case - if curr sum is equal to target, then we found a group
+	// Base Case
 	if (currSum == targetSum) {
-		return doKPartitions(a, n, 0, targetSum, visited, k - 1, 0);
+		res.push_back(runningVec);
+		return;
 	}
 
-	// Recursive Case
-	for (int i = nextIdx; i < n; i++) {
-		if (!visited[i] && currSum + a[i] <= targetSum) {
-			visited[i] = 1;
-			bool canWeDoSubprob = doKPartitions(a, n, currSum + a[i], targetSum, visited, k, i + 1);
+	// Exclude case
+	findCombinations(a, targetSum, currSum, runningVec, idx + 1, res);
 
-			if (canWeDoSubprob)
-				return true;
+	// Include case
+	runningVec.push_back(a[idx]);
+	for (int i = idx; i < a.size(); i++) {
+		if (currSum + a[i] <= targetSum) {
+			findCombinations(a, targetSum, currSum + a[idx], runningVec, i, res);
 		}
-
-		// Backtracking for false case
-		visited[i] = 0;
 	}
 
-	return false;
+	// Backtrack
+	runningVec.pop_back();
+	return;
 }
 
 
-bool isKPartitionPossible(int a[], int n, int k) {
-	vector<int> visited(n, 0);
-	int sumOfAllElements = 0;
-	int maxNum = -1;
+vector<vector<int>> combinationSum(vector<int> &a, int b) {
+	vector<vector<int>> res;
+	vector<int> r;
+	findCombinations(a, b, 0, r, 0, res);
 
-	for (int i = 0; i < n; i++) {
-		sumOfAllElements += a[i];
-		maxNum = max(maxNum, a[i]);
+	// Get unique values and sort according to format
+	for (int i = 0; i < res.size(); i++) {
+		sort(res[i].begin(), res[i].end());
 	}
+	sort(res.begin(), res.end());
+	res.erase(unique(res.begin(), res.end()), res.end());
 
-	// Pruning
-	if (sumOfAllElements % k != 0 || maxNum > sumOfAllElements / k)
-		return false;
-
-	return doKPartitions(a, n, 0, (sumOfAllElements / k), visited, k, 0);
+	return res;
 }
-
-
 
 int main() {
 	blink
@@ -91,12 +87,16 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n = 5;
-	int a[n];
+	int n; cin >> n;
+	vector<int> inp(n);
+	for (int i = 0; i < n; i++)
+		cin >> inp[i];
 
 	for (int i = 0; i < n; i++) {
-		cin >> a[i];
+		cout << inp[i] << " ";
 	}
+	cout << endl;
 
-	cout << isKPartitionPossible(a, n, 3);
+	combinationSum(inp, 16);
+	return 0;
 }
