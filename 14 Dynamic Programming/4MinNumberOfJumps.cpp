@@ -46,12 +46,3 @@ int minJumps(int nums[], int n) {
 
 	return jumps;
 }
-
-
-// ** DP Approach ** //
-int minJumpsDP(int nums[], int n) {
-	vector<int> jumps(n);
-
-	if (n == 0 or arr[0] == 0)
-		return -1;
-}
