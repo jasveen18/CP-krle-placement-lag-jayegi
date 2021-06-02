@@ -60,4 +60,44 @@ int equalPartition(int N, int arr[]) {
 bool isSubsetSumPossible(vector<int> &nums, int targetSum) {
 	int n = nums.size();
 
+	// Initialization for bottom up, just like 0-1 Knapsack
+	vector<vector<bool>> dp(n + 1, vector<bool> (targetSum + 1, 0));
+
+	// Because we are looking for weight in zero size array.
+	for (int j = 0; j <= targetSum; j++)
+		dp[0][j] = false;
+	// We are looking for zero sum in subset, so empty subset is always the answer.
+	for (int i = 0; i <= n; i++)
+		dp[i][0] = true;
+
+
+	// Build up the DP
+	for (int i = 1; i <= n; i++) {
+		for (int j = 0; j <= targetSum; j++) {
+			// If we can include it
+			if (nums[i - 1] <= j) {
+//							Exclude         Include
+				dp[i][j] = dp[i - 1][j] or dp[i - 1][j - nums[i - 1]];
+			} else {
+				dp[i][j] = dp[i - 1][j];
+			}
+		}
+	}
+
+	return dp[n][targetSum];
 }
+
+bool equalPartition(vector<int> &nums) {
+	int totalSum = 0;
+	for (int i = 0; i < nums.size(); i++)
+		totalSum += nums[i];
+
+	// If the sum is odd, we can't divide into 2 equal parts
+	if (totalSum & 1)
+		return false;
+
+	// Else see if we can pick some elements to form the array with half the sum.
+	return isSubsetSumPossible(nums, totalSum / 2)
+}
+
+// Note we can also modify the bottom up appraoch of subset sum possible to top down using recursion
