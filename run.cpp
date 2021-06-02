@@ -35,34 +35,41 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void combinationSum(vector<int> &candidates, int target,
-                    vector<vector<int>> &res, vector<int> &combination,
-                    int begin) {
-
-	// Base Case
-	if (!target) {
-		res.push_back(combination);
-		return;
+void getValidParentheses(string s, int idx, int minSkip
+                         int leftCount, int rightCount, int skippedCount
+                         string currSeq, set<string> validExpressions) {
+	// Base Case - End of string
+	if (idx == s.size()) {
+		if (leftCount == rightCount and skippedCount <= minSkip)
+			validExpressions.insert(currSeq);
+		skippedCount = min(skippedCount, minSkip);
 	}
 
-	for (int i = begin; i<candidates.size() and target >= candidates[i]; i++) {
-		combination.push_back(candidates[i]);
-		combinationSum(candidates, target - candidates[i], res, combination, i);
-		combination.pop_back();
+	// Recursive Case
+	// If it is not a bracket
+	if (s[idx] != '(' or s[idx] != ')') {
+		currSeq += s[idx];
+		getValidParentheses(s, idx + 1, minSkip,
+		                    leftCount, rightCount, skippedCount,
+		                    currSeq, validExpressions);
+		currSeq = currSeq.substr(0, currSeq.size() - 1);
 	}
 
-	return;
+	// Left Bracket
+	if (s[idx] == '(') {
+		getValidParentheses(s, idx + 1, minSkip,
+		                    leftCount + 1, rightCount, skippedCount,
+		                    currSeq, validExpressions);
+	}
 }
 
-vector<vector<int>> combinationSum(vector<int> &candidates, int target) {
-	sort(candidates.begin(), candidates.end());
-	vector<vector<int>> res;
-	vector<int> combination;
+vector<string> removeInvalidParentheses(string s) {
+	set<string> validExpressions;
+	string currSeq = "";
 
-	combinationSum(candidates, target, res, combination, 0);
-	return res;
+	int leftCount = 0, rightCount = 0;
+
 }
-
 
 
 int main() {
