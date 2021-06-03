@@ -39,7 +39,7 @@ bool subsetSumPossible(int nums[], int n, int targetSum) {
 	for (int i = 1; i <= n; i++) {
 		for (int j = 1; j <= targetSum, j++) {
 			if (nums[i - 1] <= j) {
-				dp[i][j] = dp[i - 1][j - nums[j]] or dp[i - 1][j];
+				dp[i][j] = dp[i - 1][j - nums[i - 1]] or dp[i - 1][j];
 			} else {
 				dp[i][j] = dp[i - 1][j];
 			}
