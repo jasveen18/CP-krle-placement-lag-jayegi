@@ -115,9 +115,9 @@ int knapsackTabulation(int wt[], int val[], int maxWeight, int n) {
 
 	// Base condition
 	for (int i = 0; i <= n; i++)
-		t[i][0] = 0;
+		dp[i][0] = 0;
 	for (int j = 0; j <= maxWeight; j++)
-		t[0][j] = 0;
+		dp[0][j] = 0;
 
 
 	// Build up the DP
@@ -132,5 +132,5 @@ int knapsackTabulation(int wt[], int val[], int maxWeight, int n) {
 		}
 	}
 
-	return dp[n][w];
+	return dp[n][maxWeight];
 }

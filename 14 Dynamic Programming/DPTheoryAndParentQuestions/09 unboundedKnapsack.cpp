@@ -34,5 +34,5 @@ int unboundedKnapsack(int wt[], int val[], int n, int maxWeight) {
 		}
 	}
 
-	return dp[n][w];
+	return dp[n][maxWeight];
 }
