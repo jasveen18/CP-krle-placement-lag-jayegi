@@ -36,4 +36,24 @@ int longestCommonSubseqRecursive(string x, string y, int n, int m) {
 }
 
 
-// Memoization Solution
+// Memoization Solution - Top Down
+int dp[n + 1][m + 1];
+// memset(dp, -1, sizeof(dp)); // This line will be in the driver function.
+int longestCommonSubseqTopDown(string x, string y, int n, int m) {
+	// Base Case
+	if (n == 0 or m == 0)
+		return dp[n][m] = 0;
+
+	// Look up at the table
+	if (dp[n][m] != -1)
+		return dp[n][m];
+
+	// Recursive Case
+	if (x[n - 1] == y[m - 1])
+		return dp[n][m] = longestCommonSubseqRecursive(x, y, n - 1, m - 1) + 1;
+
+	int leftPointer = longestCommonSubseqRecursive(x, y, n - 1, m);
+	int rightPointer = longestCommonSubseqRecursive(x, y, n, m - 1);
+
+	return dp[n][m] = max(leftPointer, rightPointer);
+}
