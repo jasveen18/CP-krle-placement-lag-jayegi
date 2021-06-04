@@ -11,7 +11,7 @@
 // If same char hai, then lcs pe add kr do and i-1, j-1, kr do.
 // If not, then check krlo ki kaunsa greater hai, udhar ke taraf jao.
 
-int printLCS(string x, string y, int n, int m) {
+string printLCS(string x, string y, int n, int m) {
 	// Initialization
 	int dp[n + 1][m + 1];
 	memset(dp, -1, sizeof(dp));

@@ -35,40 +35,47 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void getValidParentheses(string s, int idx, int minSkip
-                         int leftCount, int rightCount, int skippedCount
-                         string currSeq, set<string> validExpressions) {
-	// Base Case - End of string
-	if (idx == s.size()) {
-		if (leftCount == rightCount and skippedCount <= minSkip)
-			validExpressions.insert(currSeq);
-		skippedCount = min(skippedCount, minSkip);
+
+string printLCS(string x, string y, int n, int m) {
+	// Initialization
+	int dp[n + 1][m + 1];
+	memset(dp, -1, sizeof(dp));
+
+	for (int i = 0; i <= n; i++)
+		dp[i][0] = 0;
+	for (int j = 0; j <= m; j++)
+		dp[0][j] = 0;
+
+	// Build up the dp -> if same then add one
+	// else, get the max from both pointers.
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (x[i - 1] == y[j - 1])
+				dp[i][j] = 1 + dp[i - 1][j - 1];
+			else
+				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+		}
 	}
 
-	// Recursive Case
-	// If it is not a bracket
-	if (s[idx] != '(' or s[idx] != ')') {
-		currSeq += s[idx];
-		getValidParentheses(s, idx + 1, minSkip,
-		                    leftCount, rightCount, skippedCount,
-		                    currSeq, validExpressions);
-		currSeq = currSeq.substr(0, currSeq.size() - 1);
+	// Now we will trace the path and build LCS string
+	string lcs = "";
+	int i = n, j = m;
+
+	while (i > 0 and j > 0) {
+		if (x[i - 1] == y[j - 1]) {
+			lcs += x[i - 1];
+			i--; j--;
+		} else {
+			if (dp[i][j - 1] > dp[i - 1][j])
+				j--;
+			else
+				i--;
+		}
 	}
 
-	// Left Bracket
-	if (s[idx] == '(') {
-		getValidParentheses(s, idx + 1, minSkip,
-		                    leftCount + 1, rightCount, skippedCount,
-		                    currSeq, validExpressions);
-	}
-}
-
-vector<string> removeInvalidParentheses(string s) {
-	set<string> validExpressions;
-	string currSeq = "";
-
-	int leftCount = 0, rightCount = 0;
-
+	// Niche se start krre the isliye reversed LCS aaya.
+	reverse(lcs.begin(), lcs.end());
+	return lcs;
 }
 
 
@@ -79,23 +86,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n; cin >> n;
-	vector<int> inp(n);
-	for (int i = 0; i < n; i++)
-		cin >> inp[i];
-
-	for (int i = 0; i < n; i++) {
-		cout << inp[i] << " ";
-	}
-	cout << endl;
-
-	vector<vector<int>> res = combinationSum(inp, 6);
-
-	for (int i = 0; i < res.size(); i++) {
-		for (int j = 0; j < res[i].size(); j++)
-			cout << res[i][j] << " ";
-		cout << endl;
-	}
+	cout << printLCS("abcdef", "adsdfgsdfgdsfgf", 6, 15);
 
 	return 0;
 }
