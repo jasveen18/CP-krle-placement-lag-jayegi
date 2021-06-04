@@ -50,10 +50,36 @@ int longestCommonSubseqTopDown(string x, string y, int n, int m) {
 
 	// Recursive Case
 	if (x[n - 1] == y[m - 1])
-		return dp[n][m] = longestCommonSubseqRecursive(x, y, n - 1, m - 1) + 1;
+		return dp[n][m] = longestCommonSubseqTopDown(x, y, n - 1, m - 1) + 1;
 
-	int leftPointer = longestCommonSubseqRecursive(x, y, n - 1, m);
-	int rightPointer = longestCommonSubseqRecursive(x, y, n, m - 1);
+	int leftPointer = longestCommonSubseqTopDown(x, y, n - 1, m);
+	int rightPointer = longestCommonSubseqTopDown(x, y, n, m - 1);
 
 	return dp[n][m] = max(leftPointer, rightPointer);
+}
+
+
+// Tabulation Solution - Bottom Up
+int longestCommonSubseqBottomUp(string x, string y, int n, int m) {
+	// Initialization
+	int dp[n + 1][m + 1];
+	memset(dp, -1, sizeof(dp));
+
+	for (int i = 0; i <= n; i++)
+		dp[i][0] = 0;
+	for (int j = 0; j <= m; j++)
+		dp[0][j] = 0;
+
+	// Build up the dp -> if same then add one
+	// else, get the max from both pointers.
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (x[i - 1] == y[j - 1])
+				dp[i][j] = 1 + dp[i - 1][j - 1];
+			else
+				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+		}
+	}
+
+	return dp[n][m];
 }
