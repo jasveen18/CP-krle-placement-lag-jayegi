@@ -35,49 +35,28 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-
-string printLCS(string x, string y, int n, int m) {
+int lcs(int x, int y, string s1, string s2) {
 	// Initialization
-	int dp[n + 1][m + 1];
+	int dp[x + 1][y + 1];
 	memset(dp, -1, sizeof(dp));
 
-	for (int i = 0; i <= n; i++)
+	for (int i = 0; i <= x; i++)
 		dp[i][0] = 0;
-	for (int j = 0; j <= m; j++)
+	for (int j = 0; j <= y; j++)
 		dp[0][j] = 0;
 
-	// Build up the dp -> if same then add one
-	// else, get the max from both pointers.
-	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= m; j++) {
-			if (x[i - 1] == y[j - 1])
+	// Build up the dp
+	for (int i = 1; i <= x; i++) {
+		for (int j = 1; j <= y; j++) {
+			if (s1[i - 1] == s2[j - 1])
 				dp[i][j] = 1 + dp[i - 1][j - 1];
 			else
 				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
 		}
 	}
 
-	// Now we will trace the path and build LCS string
-	string lcs = "";
-	int i = n, j = m;
-
-	while (i > 0 and j > 0) {
-		if (x[i - 1] == y[j - 1]) {
-			lcs += x[i - 1];
-			i--; j--;
-		} else {
-			if (dp[i][j - 1] > dp[i - 1][j])
-				j--;
-			else
-				i--;
-		}
-	}
-
-	// Niche se start krre the isliye reversed LCS aaya.
-	reverse(lcs.begin(), lcs.end());
-	return lcs;
+	return dp[x][y];
 }
-
 
 int main() {
 	blink
