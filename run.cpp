@@ -36,22 +36,26 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-long long int nthCatalanNumber(int n) {
+// Recursive Solution -
+// nCr(n, 0) = nCr(n, n) = 1;
+// nCr(n, r) = nCr(n-1, r-1) + nCr(n-1, r)
+long long int binomialCoefficientProblem(int n, int r) {
+	const int mod = 1e9 + 7;
 	// Initialization
-	vector<long long int> dp(n + 1, 0);
-	dp[0] = 1;
-	dp[1] = 1;
-	dp[2] = 2;
+	vector<vector<long long int>> dp(n + 1, vector<long long int> (r + 1, 0));
+	for (int j = 0; j <= r; j++)
+		dp[0][j] = 0;
+	for (int i = 0; i <= n; i++)
+		dp[i][0] = 1;
 
-	for (int i = 3; i <= n; i++) {
-		long long int sumTillHere = 0;
-		for (int j = 0; j <= i; j++) {
-			sumTillHere += dp[j] * dp[i - j - 1];
+	// Build up the DP
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= r; j++) {
+			dp[i][j] = (dp[i - 1][j - 1] % mod) + (dp[i - 1][j] % mod) % mod;
 		}
-		dp[i] = sumTillHere;
 	}
 
-	return dp[n];
+	return dp[n][r] % mod;
 }
 
 
@@ -62,7 +66,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << nthCatalanNumber(6);
+	cout << binomialCoefficientProblem(3, 2);
 
 	return 0;
 }
