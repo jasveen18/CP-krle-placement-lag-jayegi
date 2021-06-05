@@ -35,46 +35,25 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-int longestPalindromicSubseq(string s1, string s2, int x, int y)
-{
+
+long long int nthCatalanNumber(int n) {
 	// Initialization
-	int dp[x + 1][y + 1];
-	memset(dp, -1, sizeof(dp));
+	vector<long long int> dp(n + 1, 0);
+	dp[0] = 1;
+	dp[1] = 1;
+	dp[2] = 2;
 
-	for (int i = 0; i <= x; i++)
-		dp[i][0] = 0;
-	for (int j = 0; j <= y; j++)
-		dp[0][j] = 0;
-
-	// Build up the dp
-	int longestStringLen = 0;
-	for (int i = 1; i <= x; i++) {
-		for (int j = 1; j <= y; j++) {
-			if (s1[i - 1] == s2[j - 1]) {
-				dp[i][j] = 1 + dp[i - 1][j - 1];
-				longestStringLen += dp[i][j] - 1;
-			}
-			else
-				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+	for (int i = 3; i <= n; i++) {
+		long long int sumTillHere = 0;
+		for (int j = 0; j <= i; j++) {
+			sumTillHere += dp[j] * dp[i - j - 1];
 		}
+		dp[i] = sumTillHere;
 	}
 
-	// for (int i = 0; i <= x; i++) {
-	// 	for (int j = 0; j <= y; j++)
-	// 		cout << dp[i][j] << " ";
-	// 	cout << endl;
-	// }
-
-	return longestStringLen;
+	return dp[n];
 }
 
-long long int  countPS(string str) {
-	string x = str;
-	reverse(str.begin(), str.end());
-	string y = str;
-
-	return (longestPalindromicSubseq(x, y, x.size(), x.size())) + str.size();
-}
 
 int main() {
 	blink
@@ -83,7 +62,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << countPS("aaaab");
+	cout << nthCatalanNumber(6);
 
 	return 0;
 }
