@@ -68,7 +68,7 @@ int longestSubsequence(int n, int a[]) {
 	}
 	sort(b, b + n);
 
-	return longestSubsequence(n, n, a, b);
+	return lcs(n, n, a, b);
 }
 
 
