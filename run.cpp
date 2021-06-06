@@ -72,6 +72,20 @@ int longestSubsequence(int n, int a[]) {
 }
 
 
+// Kadane's Algroithm
+// In constant space
+int minSubarraySum(int arr[], int n) {
+	int minSoFar = arr[0];
+	int minEnding = arr[0];
+
+	for (int i = 1; i < n; i++) {
+		minSoFar = min(arr[i] + minSoFar, arr[i]);
+		minEnding = min(minEnding, minSoFar);
+	}
+
+	return minEnding;
+}
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -79,7 +93,8 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << binomialCoefficientProblem(3, 2);
+	int arr[7] = {3, -4, 2, -3, -1, 7, -5};
+	cout << minSubarraySum(arr, 7);
 
 	return 0;
 }
