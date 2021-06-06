@@ -36,26 +36,39 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
-// Recursive Solution -
-// pCr(n, 0) = 1
-// pCr(n, k) = pCr(n-1, k) + k * p(n-1, k-1)
-long long int permutationCoefficientProblem(int n, int r) {
-	const int mod = 1e9 + 7;
+int lcs(int x, int y, int s1[], int s2[]) {
 	// Initialization
-	vector<vector<long long int>> dp(n + 1, vector<long long int> (r + 1, 0));
-	for (int j = 0; j <= r; j++)
-		dp[0][j] = 0;
-	for (int i = 0; i <= n; i++)
-		dp[i][0] = 1;
+	int dp[x + 1][y + 1];
+	memset(dp, -1, sizeof(dp));
 
-	// Build up the DP
-	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= r; j++) {
-			dp[i][j] = ((dp[i - 1][j - 1] * j) % mod) + (dp[i - 1][j] % mod) % mod;
+	for (int i = 0; i <= x; i++)
+		dp[i][0] = 0;
+	for (int j = 0; j <= y; j++)
+		dp[0][j] = 0;
+
+	// Build up the dp
+	for (int i = 1; i <= x; i++) {
+		for (int j = 1; j <= y; j++) {
+			if (s1[i - 1] == s2[j - 1])
+				dp[i][j] = 1 + dp[i - 1][j - 1];
+			else
+				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
 		}
 	}
 
-	return dp[n][r] % mod;
+	return dp[x][y];
+}
+
+
+int longestSubsequence(int n, int a[]) {
+	// Get a new array
+	int b[n];
+	for (int i = 0; i < n; i++) {
+		b[i] = a[i];
+	}
+	sort(b, b + n);
+
+	return longestSubsequence(n, n, a, b);
 }
 
 
