@@ -5,8 +5,8 @@
 * https://practice.geeksforgeeks.org/problems/longest-common-subsequence-1587115620/1
 ******************************************/
 
-T - O(N * N)
-S - O(N * N)
+// T - O(N * N)
+// S - O(N * N)
 
 int longestCommonSubseq(string x, string y, int n, int m) {
 	// Initialization
