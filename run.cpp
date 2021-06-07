@@ -2,7 +2,6 @@
 * AUTHOR : ARPIT *
 * NICK : arpitfalcon *
 * INSTITUTION : BIT MESRA *
-* Ab m game m hu. *
 ******************************************/
 
 #include <bits/stdc++.h>
