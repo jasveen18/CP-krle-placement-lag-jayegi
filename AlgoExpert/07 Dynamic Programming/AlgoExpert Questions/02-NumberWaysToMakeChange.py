@@ -1,8 +1,8 @@
 # Number of ways to make change given the denomination of coins.
 
 # O(N) Time | O(N) Space
-def numWaysToMakeChange(coins: list) -> int:
-	dp = [0] * (len(nums) + 1)
+def numWaysToMakeChange(coins: list, n: int) -> int:
+	dp = [0] * (n+1)
 	dp[0] = 1
 
 	for i in range(n+1):
