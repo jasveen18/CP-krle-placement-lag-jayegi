@@ -26,7 +26,7 @@ int longestIncreasingSubsequence(vector<int> &nums) {
 	for (int i = 0; i < n; i++) {
 		for (int length = 0; length < n; length++) {
 			if (dp[length] < nums[i] and nums[i] < dp[length + 1]) {
-				dp[length] = nums[i];
+				dp[length + 1] = nums[i];
 			}
 		}
 	}
