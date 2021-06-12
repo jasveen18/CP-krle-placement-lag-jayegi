@@ -70,7 +70,7 @@ int mcmMinCostRecursive(int arr[], int i, int j) {
 
 int static dp[1001][1001];
 // memset(dp, -1, sizeof(dp)); Ye main function pe.
-int mcmMinCostTopDown(int arr[]) {
+int mcmMinCostTopDown(int arr[], int i, int j) {
 	// Base Case
 	if (i >= j)
 		return 0;
@@ -82,8 +82,8 @@ int mcmMinCostTopDown(int arr[]) {
 	// Recursive Case
 	int minCost = INT_MAX;
 	for (int k = i; k < j; k++) {
-		int firstPart = mcmMinCostRecursive(arr, i, k);
-		int secondPart = mcmMinCostRecursive(arr, k + 1, j);
+		int firstPart = mcmMinCostTopDown(arr, i, k);
+		int secondPart = mcmMinCostTopDown(arr, k + 1, j);
 
 		int costHere = arr[i - 1] * arr[k] * arr[j];
 		int totalInThisCase = firstPart + secondPart + costHere;
