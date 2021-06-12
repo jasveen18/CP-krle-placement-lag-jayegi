@@ -12,7 +12,7 @@ int mcmTopDown(int arr[], int i, int j, int dp[][]) {
 	for (int k = i; k < j; k++) {
 		int tempAns = mcmTopDown(arr, i, k, dp)
 		              + mcmTopDown(arr, k + 1, j, dp)
-		              + arr[i - 1] * arr[k] * arr[j];
+		              + arr[i - 1] * arr[k] * arr[j]; // this is the cost
 
 		int ans = min(tempAns, ans);
 	}
