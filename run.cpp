@@ -34,6 +34,29 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
+int maxGoldCoins(vector<vector<int>> &mine) {
+	int n = mine.size();
+	int m = mine[0].size();
+
+	// Initialize the dp
+	vector<vector<int>> dp(n + 2, vector<int> (m + 2, 0));
+
+	for (int j = 1; j <= m; j++) {
+		for (int i = 1; i <= n; i++) {
+			dp[i][j] = mine[i - 1][j - 1] + max(dp[i][j - 1],
+			                                    max(dp[i - 1][j - 1], dp[i + 1][j - 1]));
+		}
+	}
+
+	int maxCoins = 0;
+	for (int i = 1; i <= n; i++) {
+		maxCoins = max(maxCoins, dp[i][m]);
+	}
+
+	return maxCoins;
+}
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -41,36 +64,8 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	rabinKarpAlgo("abbabs", "ab");
-	// cout << powerFunc(4, 2);
+
 
 	return 0;
 }
 
-
-int countPS(string s)
-{
-	long long int mod = 1000000007;
-	int n = s.length();
-	int dp[n][n];
-	for (int g = 0; g < n; g++) {
-		for (int j = g, i = 0; j < n; i++, j++) {
-			if (g == 0) {
-				dp[i][j] = 1;
-			}
-			else if (g == 1) {
-				if (s[i] == s[j]) dp[i][j] = 3;
-				else dp[i][j] = 2;
-			}
-			else if (s[i] == s[j]) {
-				dp[i][j] = (dp[i][j - 1] + dp[i + 1][j] + 1) % mod;
-			}
-			else {
-				long long a = (dp[i][j - 1] + dp[i + 1][j]) % mod;
-				long long b = dp[i + 1][j - 1];
-				dp[i][j] = ((a - b) % mod + mod) % mod;
-			}
-		}
-	}
-	return dp[0][n - 1];
-}
