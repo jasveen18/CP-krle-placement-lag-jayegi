@@ -29,7 +29,7 @@ long long int powerFunc(long long int a, long long int b) {
 	long long int res = 1;
 
 	while (b) {
-		if (b & 111) {
+		if (b & 1ll) {
 			res *= a;
 			res %= mod;
 		}

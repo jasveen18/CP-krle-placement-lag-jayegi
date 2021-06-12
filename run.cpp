@@ -64,7 +64,7 @@ long long int powerFunc(long long int a, long long int b) {
 	long long int res = 1;
 
 	while (b) {
-		if (b & 111) {
+		if (b & 1ll) {
 			res *= a;
 			res %= mod;
 		}
@@ -104,34 +104,30 @@ long long int polyHashString(string s) {
 
 void rabinKarpAlgo(string text, string pattern) {
 	long long int n = text.size(), m = pattern.size();
-	long long int textHash = polyHashString(text.substr(0, m));
 	long long int patternHash = polyHashString(pattern);
 
-	// If first se hi match kr gya, print the index, then move on.
-	if (textHash == patternHash) {
-		cout << 0 << " ";
+	vector<long long int> pref(n);
+	for (int i = 0; i < n; i++) {
+		pref[i] = (text[i] - 'a' + 1) * powerFunc(primeNum, i);
+		pref[i] %= mod;
 	}
 
-	// Let's check now with rolling hash.
-	for (int i = 1; i + m <= n; i++) {
-		long long int hashNext = textHash;
-		// Remove the i-1 th char.
-		hashNext = (hashNext - (text[i - 1] - 'a' + 1) + mod) % mod;
-		// Now we need to divide by p.
-		hashNext *= inverseFunc(primeNum);
-		hashNext %= mod;
+	for (int i = 1; i < n; i++) {
+		pref[i] += pref[i - 1];
+		pref[i] %= mod;
+	}
 
-		// Add the new character
-		hashNext += ((text[i + m - 1] - 'a' + 1) * powerFunc(primeNum, m - 1));
-		hashNext %= mod;
+	for (int i = 0; i + m <= n; i++) {
+		// Substring from s[l...r]
+		// r = i + m - 1
 
-		// Check if hash is equal
-		// cout << hashNext << " " << patternHash << endl;
-		if (hashNext == patternHash)
-			cout << i << " ";
+		int newHash = pref[i + m - 1];
+		if (i - 1 >= 0)
+			newHash -= pref[i - 1];
+		newHash += mod; newHash %= mod;
 
-		// Modify to move on to next window
-		textHash = hashNext;
+		if (newHash == (patternHash * powerFunc(primeNum, i)) % mod)
+			cout << i << endl;
 	}
 }
 
@@ -144,6 +140,7 @@ int main() {
 #endif
 
 	rabinKarpAlgo("abbabs", "ab");
+	// cout << powerFunc(4, 2);
 
 	return 0;
 }
