@@ -42,7 +42,11 @@ int countOccurenceAnagrams(string text, string pattern) {
 				countOccurances++;
 
 			// Ab slide krenge
+			// Ye ekdum reverse hogi
 			if (charCount.find(text[i]) != charCount.end()) {
+				if (charCount[text[i]] == 0)  // char count badha do if ye zero tha kyunki ab increase hoga
+					countCharPresent++;
+
 				charCount[text[i]]++;
 			}
 			i++; j++;
