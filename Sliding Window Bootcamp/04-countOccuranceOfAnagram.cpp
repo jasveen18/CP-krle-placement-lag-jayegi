@@ -9,6 +9,8 @@
 // 2. Substring nikalna hai, anagram form krra hai ya ni.
 // 3. Window size bhi dekho dia hai, that is length of 2nd string(pattern).
 
+// M unique char count isliye banaya so that mujhe map ko baar baar check na krna pade.
+// Constant time ho jaega isse. Please read again kyunki this is a very good optimisation.
 int countOccurenceAnagrams(string text, string pattern) {
 	int size = text.size();
 	int k = pattern.size();
