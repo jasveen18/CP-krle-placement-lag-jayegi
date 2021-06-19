@@ -23,6 +23,7 @@ vector<int> maxOfAllSubarrays(vector<int> &nums, int k) {
 	int i = 0, j = 0;
 	while (j < size) {
 		// Do the operation
+		if(highestEl.size() == 0 or highestEl)
 
 		// If window size se chota hai
 		if (j - i + 1 < k) {
