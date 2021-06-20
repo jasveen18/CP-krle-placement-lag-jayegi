@@ -20,7 +20,6 @@ void mergeBothArray(int arr1[], int arr2[], int n, int m) {
 	// cout<<n<<" "<<m<<endl;
 
 	for (int gap = nextGap(totalSize); gap > 0; gap = nextGap(gap)) {
-		// cout<<gap<<endl;
 		for (int i = 0; i < totalSize - gap; i++) {
 			int j = i + gap;
 
@@ -41,8 +40,6 @@ void mergeBothArray(int arr1[], int arr2[], int n, int m) {
 				if (arr2[i - n] > arr2[j - n])
 					swap(arr2[i - n], arr2[j - n]);
 			}
-
-			// cout<<"J: "<<j<<endl;
 		}
 	}
 
