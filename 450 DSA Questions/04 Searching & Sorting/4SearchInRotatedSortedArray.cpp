@@ -53,7 +53,24 @@ int searchInRotatedArray(vector<int>& nums, int target) {
 	}
 
 	int pivot = start;
-
+	start = 0, end = n - 1;
 	// Now that we have pivot, we will see in which part the target lies and then do normal BS there.
+	// Check
+	if (target >= nums[pivot] and target <= nums[end])
+		start = pivot; // 2nd part of the array
+	else
+		end = pivot; // 1st part of the array
 
+	while (start <= end) {
+		int mid = start + (end - start) / 2;
+
+		if (nums[mid] > target)
+			end = mid - 1;
+		else if (nums[mid] < target)
+			start = mid + 1;
+		else
+			return mid;
+	}
+
+	return -1;
 }
