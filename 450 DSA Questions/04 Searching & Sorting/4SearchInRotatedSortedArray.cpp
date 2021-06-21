@@ -31,3 +31,29 @@ int searchInRotatedArray(vector<int>& nums, int target) {
 
 	return -1;
 }
+
+
+// Approach 2 - with pivot
+int searchInRotatedArray(vector<int>& nums, int target) {
+	int n = nums.size();
+
+	// Edge
+	if (n == 0)
+		return -1;
+
+	int start = 0, end = n - 1;
+
+	// We will first find the pivot
+	while (start < end) {
+		int mid = start + (end - start) / 2;
+		if (nums[mid] > nums[end])
+			start = mid + 1;
+		else
+			end = mid;
+	}
+
+	int pivot = start;
+
+	// Now that we have pivot, we will see in which part the target lies and then do normal BS there.
+
+}
