@@ -1,2 +1,1 @@
-Post traversal of the constructed tree is 
-s q t u r v p 
+3
