@@ -41,3 +41,7 @@ int kthElement(int arr1[], int arr2[], int n, int m, int k) {
 
 	return ans;
 }
+
+
+// Approach 2 - Divide and Conquer OPOP
+// T - O(min(LogN, LogM)) | S - O(1)
