@@ -34,34 +34,45 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-bool isPossibleToFill(vector<ll> &heights, ll n, ll requiredWood, ll cutHeight) {
-	ll woodObtained = 0;
+bool isPoossibleToCook(vector<int> &ranks, int cooks, int paratas, int time) {
+	int paratasCooked = 0;
+	for (int i = 0; i < cooks; i++) {
+		int p = 0;
+		int timeTaken = 0;
+		int multiplier = 1;
+		while (timeTaken + (ranks[i] * multiplier) < time) {
+			p++;
+			timeTaken += ranks[i] * multiplier;
+			multiplier++;
+		}
 
-	for (ll i = 0; i < n; i++) {
-		woodObtained += max((ll)0, heights[i] - cutHeight);
+		paratasCooked += p;
 	}
 
-	return woodObtained >= requiredWood;
+	return paratasCooked >= paratas;
 }
 
 
-ll ecoCuts(vector<ll> &heights, ll n, ll requiredWood) {
-	// We will use BS on the search space.
-	ll low = 0, high = *max_element(heights.begin(), heights.end());
-	ll ans = low;
+int minTimeRequiredToCook(vector<int> &ranks, int cooks, int paratas) {
+	// BS use kr lenge in search space.
+	int fastestCook = *min_element(ranks.begin(), ranks.end());
+	int start = 0, end = INT_MAX;
+	int ans = 0;
+	// deb2(start, end);
 
-	while (low <= high) {
-		ll mid = low + (high - low) / 2;
+	while (start <= end) {
+		int mid = start + (end - start) / 2;
 
-		if (isPossibleToFill(heights, n, requiredWood, mid)) {
+		// is it possible to deliver this much paratas in given time?
+		if (isPoossibleToCook(ranks, cooks, paratas, mid)) {
 			ans = mid;
-			low = mid + 1;
+			end = mid - 1;
 		} else {
-			high = mid - 1;
+			start = mid + 1;
 		}
 	}
 
-	return ans;
+	return ans - 1;
 }
 
 
@@ -72,14 +83,16 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	ll n, requiredWood;
-	cin >> n >> requiredWood;
+	TestCase {
+		int paratas, cooks;
+		cin >> paratas >> cooks;
+		vector<int> ranks(cooks);
 
-	vector<ll> heights(n);
-	for (ll i = 0; i < n; i++)
-		cin >> heights[i];
+		for (int i = 0; i < cooks; i++)
+			cin >> ranks[i];
 
-	cout << ecoCuts(heights, n, requiredWood);
+		cout << minTimeRequiredToCook(ranks, cooks, paratas) << endl;
+	}
 
 	return 0;
 }
