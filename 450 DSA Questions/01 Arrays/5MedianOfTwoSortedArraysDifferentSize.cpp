@@ -54,7 +54,7 @@ double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2) {
 		int cut2 = (n1 + n2 + 1) / 2 - cut1; 	// Left over jitna chaiye in the first part of sorted array.
 
 		int left1 = cut1 == 0 ? INT_MIN : nums1[cut1 - 1]; // if zero element bachta hai toh -inf lelo ni toh cut ke pehle wala
-		int left2 = cut2 == 0 ? INT_MIN : nums2[cut2 - 2];
+		int left2 = cut2 == 0 ? INT_MIN : nums2[cut2 - 1];
 
 		int right1 = cut1 == n1 ? INT_MAX : nums1[cut1]; // if ek bhi element ni bacha to use at the 2nd part.
 		int right2 = cut2 == n2 ? INT_MAX : nums2[cut2];
