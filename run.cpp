@@ -34,41 +34,34 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-bool isPossibleToPlace(int n, int cows, vector<int> stalls, int dist) {
-	// Place the cow at first place
-	cows--;
-	int lastStallUsed = stalls[0];
+bool isPossibleToFill(vector<ll> &heights, ll n, ll requiredWood, ll cutHeight) {
+	ll woodObtained = 0;
 
-	// Now start from 2nd stall and start placing
-	for (int i = 1; i < n; i++) {
-		if (dist <= stalls[i] - lastStallUsed) {
-			cows--;
-			lastStallUsed = stalls[i];
-		}
+	for (ll i = 0; i < n; i++) {
+		woodObtained += max((ll)0, heights[i] - cutHeight);
 	}
 
-	// Return true if we were able to place all the cows
-	return cows <= 0;
+	return woodObtained >= requiredWood;
 }
 
-int aggresiveCows(int n, int cows, vector<int> &stalls) {
-	int start = 1, end = stalls[n - 1];
-	int maxDistance = 1;
-	sort(stalls.begin(), stalls.end());
 
-	while (start <= end) {
-		int mid = start + (end - start) / 2;
+ll ecoCuts(vector<ll> &heights, ll n, ll requiredWood) {
+	// We will use BS on the search space.
+	ll low = 0, high = *max_element(heights.begin(), heights.end());
+	ll ans = low;
 
-		// Is it possible to place all cows with current space?
-		if (isPossibleToPlace(n, cows, stalls, mid)) {
-			maxDistance = max(maxDistance, mid);
-			start = mid + 1; // If this is achieveable, let's try higher
+	while (low <= high) {
+		ll mid = low + (high - low) / 2;
+
+		if (isPossibleToFill(heights, n, requiredWood, mid)) {
+			ans = mid;
+			low = mid + 1;
 		} else {
-			end = mid - 1;
+			high = mid - 1;
 		}
 	}
 
-	return maxDistance;
+	return ans;
 }
 
 
@@ -79,14 +72,14 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	TestCase {
-		int n, c; cin >> n >> c;
-		vector<int> stalls(n);
-		for (int i = 0; i < n; i++)
-			cin >> stalls[i];
+	ll n, requiredWood;
+	cin >> n >> requiredWood;
 
-		cout << aggresiveCows(n, c, stalls) << endl;
-	}
+	vector<ll> heights(n);
+	for (ll i = 0; i < n; i++)
+		cin >> heights[i];
+
+	cout << ecoCuts(heights, n, requiredWood);
 
 	return 0;
 }
