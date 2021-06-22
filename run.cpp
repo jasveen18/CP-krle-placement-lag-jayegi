@@ -34,45 +34,36 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-bool isPoossibleToCook(vector<int> &ranks, int cooks, int paratas, int time) {
-	int paratasCooked = 0;
-	for (int i = 0; i < cooks; i++) {
-		int p = 0;
-		int timeTaken = 0;
-		int multiplier = 1;
-		while (timeTaken + (ranks[i] * multiplier) < time) {
-			p++;
-			timeTaken += ranks[i] * multiplier;
-			multiplier++;
-		}
-
-		paratasCooked += p;
-	}
-
-	return paratasCooked >= paratas;
-}
-
-
-int minTimeRequiredToCook(vector<int> &ranks, int cooks, int paratas) {
-	// BS use kr lenge in search space.
-	int fastestCook = *min_element(ranks.begin(), ranks.end());
-	int start = 0, end = INT_MAX;
+int maxSumTraversing(vector<int> &arr1, vector<int> &arr2, int n, int m) {
 	int ans = 0;
-	// deb2(start, end);
+	int runningSum1 = 0, runningSum2 = 0;
+	int p1 = 0, p2 = 0;
 
-	while (start <= end) {
-		int mid = start + (end - start) / 2;
+	while (p1 < n and p2 < m) {
+		if (arr1[p1] == arr2[p2]) {
+			// Add to answer
+			ans += max(runningSum1, runningSum2) + arr1[p1];
 
-		// is it possible to deliver this much paratas in given time?
-		if (isPoossibleToCook(ranks, cooks, paratas, mid)) {
-			ans = mid;
-			end = mid - 1;
+			// Reset back
+			p1++; p2++;
+			runningSum1 = 0;
+			runningSum2 = 0;
+		} else if (arr1[p1] < arr2[p2]) {
+			runningSum1 += arr1[p1++];
 		} else {
-			start = mid + 1;
+			runningSum2 += arr2[p2++];
 		}
 	}
 
-	return ans - 1;
+	while (p1 < n) {
+		runningSum1 += arr1[p1++];
+	}
+
+	while (p2 < m) {
+		runningSum2 += arr2[p2++];
+	}
+
+	return ans + max(runningSum1, runningSum2);
 }
 
 
@@ -83,15 +74,20 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	TestCase {
-		int paratas, cooks;
-		cin >> paratas >> cooks;
-		vector<int> ranks(cooks);
+	int n; cin >> n;
+	while (n != 0) {
+		vector<int> seq1(n);
+		for (int i = 0; i < n; i++)
+			cin >> seq1[i];
 
-		for (int i = 0; i < cooks; i++)
-			cin >> ranks[i];
+		int m; cin >> m;
+		vector<int> seq2(m);
+		for (int i = 0; i < m; i++)
+			cin >> seq2[i];
 
-		cout << minTimeRequiredToCook(ranks, cooks, paratas) << endl;
+
+		cout << maxSumTraversing(seq1, seq2, n, m) << endl;
+		cin >> n;
 	}
 
 	return 0;
