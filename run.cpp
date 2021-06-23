@@ -29,66 +29,67 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef long double ld;
 const double PI = 3.141592653589793238463;
-
 /********************************/
 /**** Your code goes here - ****/
 /*******************************/
 
-int maxSumTraversing(vector<int> &arr1, vector<int> &arr2, int n, int m) {
-	int ans = 0;
-	int runningSum1 = 0, runningSum2 = 0;
-	int p1 = 0, p2 = 0;
+long long int x[40000005], y[40000005];
 
-	while (p1 < n and p2 < m) {
-		if (arr1[p1] == arr2[p2]) {
-			// Add to answer
-			ans += max(runningSum1, runningSum2) + arr1[p1];
-
-			// Reset back
-			p1++; p2++;
-			runningSum1 = 0;
-			runningSum2 = 0;
-		} else if (arr1[p1] < arr2[p2]) {
-			runningSum1 += arr1[p1++];
-		} else {
-			runningSum2 += arr2[p2++];
-		}
+void createSubArraySum(vector<long long int> &a, long long int x[], long long int n, long long int c) {
+	for (long long int i = 0; i < (1 << n); i++) {
+		long long int s = 0;
+		for (long long int j = 0; j < n; j++)
+			if (i & (1 << j))
+				s += a[j + c];
+		x[i] = s;
 	}
-
-	while (p1 < n) {
-		runningSum1 += arr1[p1++];
-	}
-
-	while (p2 < m) {
-		runningSum2 += arr2[p2++];
-	}
-
-	return ans + max(runningSum1, runningSum2);
 }
 
 
-int main() {
+long long int countSubsetSum(vector<long long int> &arr, long long int n, long long int a, long long int b) {
+	// Compute the subset sum of both halves
+	createSubArraySum(arr, x, n / 2, 0);
+	createSubArraySum(arr, y, n - n / 2, n / 2);
+
+	long long int size_x = 1 << (n / 2);
+	long long int size_y = 1 << (n - n / 2);
+
+	// Sort the 2nd array so that we can do binary search on this.
+	sort(y, y + size_y);
+
+	long long int ans = 0;
+
+	// Traverse over all the elements of x and do BS to find valid pairs.
+	for (long long int i = 0; i < size_x; i++) {
+		long long int minSum = a - x[i];
+		long long int maxSum = b - x[i];
+
+		long long int upp = upper_bound(y, y + size_y, maxSum) - y;
+		long long int low = lower_bound(y, y + size_y, minSum) - y;
+
+		ans += upp - low;
+	}
+
+	// if (a <= 0 and b >= 0)
+	// 	ans++;
+
+	return ans;
+}
+
+int32_t main() {
 	blink
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n; cin >> n;
-	while (n != 0) {
-		vector<int> seq1(n);
-		for (int i = 0; i < n; i++)
-			cin >> seq1[i];
+	long long int n, a, b; cin >> n >> a >> b;
+	vector<long long int> data(n);
 
-		int m; cin >> m;
-		vector<int> seq2(m);
-		for (int i = 0; i < m; i++)
-			cin >> seq2[i];
+	for (long long int i = 0; i < n; i++)
+		cin >> data[i];
 
-
-		cout << maxSumTraversing(seq1, seq2, n, m) << endl;
-		cin >> n;
-	}
+	cout << countSubsetSum(data, n, a, b);
 
 	return 0;
 }

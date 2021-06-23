@@ -15,10 +15,22 @@
 // First Problem Statement pehle -
 
 int x[2000005], y[2000005];
+
+void createSubArraySum(int arr[], int x[], int n, int c) {
+	for (int i = 0; i < (1 << n); i++) {
+		int s = 0;
+		for (int j = 0; j < n; j++)
+			if (i & (1 << j))
+				s += a[j + c];
+		x[i] = s;
+	}
+}
+
+
 int maxSubsetSum(int arr[], int n, int s) {
 	// Compute the subset sum of both halves
 	createSubArraySum(arr, x, n / 2, 0);
-	createSubArraySum(arr, x, n - n / 2, n / 2);
+	createSubArraySum(arr, y, n - n / 2, n / 2);
 
 	int size_x = 1 << (n / 2);
 	int size_y = 1 << (n - n / 2);
