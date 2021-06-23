@@ -19,7 +19,23 @@
 
 // Iterative Process
 ListNode* reverseLinkedListIterative(ListNode* head) {
+	// Empty or only one element
+	if (head == NULL or head->next == NULL)
+		return head;
 
+	ListNode *slow = NULL, *fast = head, *curr = head;
+
+	// Traverse over all the nodes and change the connectings
+	while (fast != NULL) {
+		fast = fast->next;
+
+		// Change bindings
+		curr->next = slow;
+		slow = curr;
+		curr = fast;
+	}
+
+	return slow;
 }
 
 
