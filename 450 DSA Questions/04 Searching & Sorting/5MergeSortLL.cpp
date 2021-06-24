@@ -6,6 +6,7 @@
 
 // Problem Statement - Function to sort the given linked list using Merge Sort.
 
+// Merge function with O(N) space
 Node* merge2List(Node* left, Node* right) {
     Node* res = new Node(0);
     Node* curr1 = left;
@@ -68,4 +69,23 @@ Node* mergeSort(Node* head) {
     Node* res = merge2List(leftList, rightList);
 
     return res;
+}
+
+
+
+
+// Merge Function with O(1) space
+Node* merge2ListRecursive(Node* l1, Node* l2) {
+    if (!l1)
+        return l2;
+    if (!l2)
+        return l1;
+
+    if (l1->data < l2->data) {
+        l1->next = merge2ListRecursive(l1->next, l2);
+        return l1;
+    } else {
+        l2->next = merge2ListRecursive(l1, l2->next);
+        return l2;
+    }
 }
