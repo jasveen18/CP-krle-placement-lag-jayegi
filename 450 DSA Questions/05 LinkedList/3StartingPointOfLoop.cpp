@@ -5,8 +5,7 @@
 ******************************************/
 
 // Problem Statement - Return the starting point of Loop in a LL.
-
-void removeLoopLL(Node* head) {
+Node* firstElementOfLoop(Node* head) {
 	Node* fast = head, *slow = head;
 
 	while (fast != NULL and fast->next != NULL) {
@@ -25,12 +24,11 @@ void removeLoopLL(Node* head) {
 	// You know the mathematical proof too.
 	if (slow == fast) {
 		slow = head;
-		while (slow->next != fast->next) {
+		while (slow != fast) {
 			slow = slow->next;
 			fast = fast->next;
 		}
 	}
-
 
 	return slow;
 }
