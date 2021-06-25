@@ -14,16 +14,41 @@ Node* sortKSortedLL(Node* head, int k) {
 	if (head == NULL or head->next == NULL)
 		return head;
 
-	for (Node* curr = head->next; curr != NULL; curr = curr->next) {
-		Node* j = curr;
+	priority_queue<Node*, vector<Node*>, compare> pq;
+	Node* newHead = NULL, *curr;
 
-		while (j->prev != NULL and j->data < j->prev->data) {
-			Node* prev = j->prev->prev;
-			Node* now = j->prev;
-			Node* ahead = j->next;
+	// Push the first 'k' nodes into the PQ
+	for (int i = 0; head != NULL and i <= k; i++) {
+		pq.push(head);
+		head = head->next;
+	}
 
-			j->prev->next = ahead;
-			j->prev->prev
+	while (!pq.empty()) {
+		if (newHead == NULL) {
+			newHead = pq.top();
+			newHead->prev = NULL;
+			curr = newHead;
+		} else {
+			curr->next = pq.top();
+			curr->next->prev = curr;
+			curr = curr->next;
 		}
+
+		pq.pop();
+
+		if (head == NULL) {
+			pq.push(head);
+			head = head->next;
+		}
+	}
+
+	curr->next = NULL;
+
+	return newHead;
+}
+
+struct compare {
+	bool operator()(Node *a, Node* b) {
+		return b->data > a->data;
 	}
 }
