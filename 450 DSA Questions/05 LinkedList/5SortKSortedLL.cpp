@@ -18,7 +18,12 @@ Node* sortKSortedLL(Node* head, int k) {
 		Node* j = curr;
 
 		while (j->prev != NULL and j->data < j->prev->data) {
+			Node* prev = j->prev->prev;
+			Node* now = j->prev;
+			Node* ahead = j->next;
 
+			j->prev->next = ahead;
+			j->prev->prev
 		}
 	}
 }
