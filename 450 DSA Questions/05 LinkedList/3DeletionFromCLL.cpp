@@ -1,0 +1,1 @@
+// Same as deletion from LL with litle conditions. Let's write the whole LL for all three types of LL.
