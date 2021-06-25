@@ -5,14 +5,22 @@
 ******************************************/
 
 // Problem Statement - Peform Quick Sort in the LL.
-
+// Data exchange hora hai, can we do it by changing the bindings?
 struct node* partitionIndex(struct node* head, struct node* tail) {
 	node* prev = head, *curr = head->next;
 	node* pivot = head;
 
 	while (curr != tail->next) {
-		if ()
+		if (curr->data < pivot->data) {
+			swap(prev->next->data, curr->data);
+			prev = prev->next;
 		}
+
+		curr = curr->next;
+	}
+
+	swap(pivot->data, prev->data);
+	return prev;
 }
 
 
@@ -22,7 +30,7 @@ void quickSortRecursive(struct node* head, struct node* tail) {
 		return;
 
 	// Find the pivot element
-	struct node* pivot = partitionIndex(head, tail);
+	node* pivot = partitionIndex(head, tail);
 
 	// Recursive Case
 	quickSortRecursive(head, pivot);
