@@ -34,7 +34,7 @@ BST::BST(int value) {
 
 // Insert Function
 BST* BST::insertNode(BST* root, int value) {
-	if (root == NULL)	// if there are no elements present
+	if (root == NULL)	// if there are no elements(reached correct location) present insert node
 		return new BST(value);
 
 	// Find the correct position to insert BST
@@ -71,4 +71,52 @@ BST* BST::searchNode(BST* root, int key) {
 		return searchNode(root->right, key);
 
 	return NULL;
+}
+
+
+// Delete the node if found and then return the new updated root.
+BST* BST::deleteNode(BST* root, int key) {
+	// Base Case -
+	if (root == NULL)
+		return root;
+
+	// Find the node to be deleted
+	if (key < root->val)
+		root->left = deleteNode(root->left, key);
+	else if (key > root->val)
+		root->right = deleteNode(root->right, key);
+
+	else { // If we find the correct node, we have 4 cases now.
+
+		// Case 1 - node doesn't have any children. Delete the node and return null.
+		if (root->left == NULL and root->right == NULL)
+			return NULL;
+
+		// Case 2 - node only have left children, means delete the node and return the left children
+		if (root->right == NULL)
+			return root->left;
+
+		// Case 3 - node only have right children
+		if (root->left == NULL)
+			return root->right;
+
+		// Case 4 - node has both children, we will have to handle this case
+		// Idea is to find the smallest value node from right children, and usko root->left ka kaar bhaar de denge
+		// This will maintain our order.
+
+		BST* rightSmallest = root->right;
+
+		// Traverse till the smallest possible node
+		while (rightSmallest->left != NULL) {
+			rightSmallest = rightSmallest->left;
+		}
+
+		// Root ka saara left children isse de do
+		rightSmallest->left = root->left;
+
+		// This will the new thing in place of root.
+		return root->right;
+	}
+
+	return root;
 }
