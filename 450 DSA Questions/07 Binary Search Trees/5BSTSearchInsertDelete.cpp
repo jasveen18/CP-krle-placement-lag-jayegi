@@ -20,6 +20,12 @@ public:
 
 	// Delete a node - modificatin, we can also pass a node
 	BST* deleteNode(BST*, int);
+
+	// Return the minimum value of BST
+	int minElementBST(BST*);
+
+	// Return the maximum value of BST
+	int maxElementBST(BST*);
 };
 
 
@@ -81,9 +87,9 @@ BST* BST::deleteNode(BST* root, int key) {
 		return root;
 
 	// Find the node to be deleted
-	if (key < root->val)
+	if (key < root->data)
 		root->left = deleteNode(root->left, key);
-	else if (key > root->val)
+	else if (key > root->data)
 		root->right = deleteNode(root->right, key);
 
 	else { // If we find the correct node, we have 4 cases now.
@@ -119,4 +125,28 @@ BST* BST::deleteNode(BST* root, int key) {
 	}
 
 	return root;
+}
+
+
+// Min value
+int BST::minElementBST(BST* root) {
+	if (root == NULL)
+		return INT_MAX;
+
+	while (root->left)
+		root = root->left;
+
+	return root->data;
+}
+
+
+// Max Value
+int BST::maxElementBST(BST* root) {
+	if (root == NULL)
+		return INT_MIN;
+
+	while (root->right)
+		root = root->right;
+
+	return root->data;
 }
