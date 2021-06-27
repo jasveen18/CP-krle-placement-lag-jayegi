@@ -57,4 +57,6 @@ void printKPathHelper(Node* root, vector<int> &path, int k) {
 			printVector(path, j);	// This function will print path[j], path[j+1], ... path[path.size()-1]
 	}
 
+	// Backtrack
+	path.pop_back();
 }
