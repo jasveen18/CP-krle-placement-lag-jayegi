@@ -33,6 +33,28 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
+int findMaxUndefendedBlock(int width, int height, int n, vector<int> &x, vector<int> &y) {
+	// Sort the co-ordinates
+	sort(x.begin(), x.end());
+	sort(y.begin(), y.end());
+
+	// Find the max difference between any 2 place
+	int maxDiffX = x[0] - 1;
+	int maxDiffY = y[0] - 1;
+
+
+	for (int i = 1; i < n; i++) {
+		maxDiffX = max(maxDiffX, x[i] - x[i - 1] - 1);
+		maxDiffY = max(maxDiffY, y[i] - y[i - 1] - 1);
+	}
+
+	// For the last tower, we need to match with end of field
+	maxDiffX = max(maxDiffX, width - x[n - 1]);
+	maxDiffY = max(maxDiffY, height - y[n - 1]);
+
+	return maxDiffX * maxDiffY;
+}
+
 
 int main() {
 	blink
@@ -42,50 +64,16 @@ int main() {
 #endif
 
 	TestCase {
-		ll n, q;
-		cin >> n >> q;
+		int width, height, n;
+		cin >> width >> height >> n;
 
-		vector<pair<ll, ll>> ranges;
-		for (ll i = 0; i < n; i++) {
-			ll a, b; cin >> a >> b;
-			ranges.push_back({a, b});
-		}
+		vector<int> x(n);
+		vector<int> y(n);
 
-		sort(ranges.begin(), ranges.end());
-		vector<pair<ll, ll>> nonOverLapRanges;
+		for (int i = 0; i < n; i++)
+			cin >> x[i] >> y[i];
 
-		// Merge the overlapping ranges
-		nonOverLapRanges.push_back(ranges[0]);
-		for (int i = 1; i < n; i++) {
-			if (ranges[i].first <= nonOverLapRanges[i - 1].second)
-				nonOverLapRanges[i - 1].second = max(ranges[i].second, nonOverLapRanges[i - 1].second);
-			else
-				nonOverLapRanges.push_back(ranges[i]);
-		}
-
-
-		// Make a new array to store number of values, prefix array
-		vector<ll> numRanges;
-		numRanges.push_back(0);
-		for (int i = 0; i < nonOverLapRanges.size(); i++) {
-			numRanges[i] = nonOverLapRanges[i].second - nonOverLapRanges.first + 1;
-		}
-
-		for (int i = 1; i < numRanges.size(); i++) {
-			numRanges[i] += numRanges[i - 1];
-		}
-
-
-		while (q--) {
-			ll k; cin >> k;
-
-			int idx = binarySearch(numRanges, k);
-			if (idx == -1)
-				cout << -1 << endl;
-			else
-				cout << nonOverLapRanges[idx].first - nonOverLapRanges[idx].second + k << endl;
-
-		}
+		cout << findMaxUndefendedBlock(width, height, n, x, y);
 	}
 
 	return 0;
