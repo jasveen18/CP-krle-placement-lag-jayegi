@@ -24,9 +24,11 @@ vector<pair<int, int>> kClosestPoints(vector<pair<int, int>> &points, int n, int
 		}
 	}
 
+	vector<pair<int, int>> res;
 	while (!maxHeap.empty()) {
-		// Print the answer
+		res.push_back(maxHeap.top().second);
+		maxHeap.pop();
 	}
 
-	return;
+	return res;
 }
