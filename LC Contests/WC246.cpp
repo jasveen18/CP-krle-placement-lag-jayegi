@@ -126,3 +126,91 @@ int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
 
     return res;
 }
+
+
+// 4. 1906. Minimum Absolute Difference Queries
+
+// Approach -
+// 1. We see that numbers are between 1 and 100.
+// 2. We use seg tree with bitset array (seen ab tk) in each node.
+// 3. The leaf represents a bitset with 1 at that position = value of num.
+// 4. For range we will just do bitwise OR usse jo bhi elements hoga uske index pe 1 aa jayega.
+// 5. Now, for each query we have a bitset array jisme jo jo elements hai uska index hai. So, we find the min gap.
+
+// T - O(LogN * (100 + Q))
+
+vector<bitset<101>> segTree;
+vector<int> minDifference(vector<int> &nums, vector<vector<int>> &queries) {
+    int n = nums.size();
+
+    segTree = vector<bitset<101>> (4 * (n + 1) + 1);
+    buildTree(1, 0, n - 1, nums);
+
+    vector<int> ans;
+
+    // Now process the queries
+    for (int q = 0; q < queries.size(); q++) {
+        auto seenArray = queryTree(1, 0, n - 1, queries[q][0], queries[q][1]);
+
+        // Find the first 1
+        int i = 0;
+        while (i < 101 and seenArray[i] != 1)
+            i++;
+
+        int minGap = INT_MAX;
+        int previousOne = i;
+
+        // Now find the min gap
+        for (int k = i + 1; k < 101; k++) {
+            if (seenArray[k] == 1) {
+                minGap = min(minGap, k - previousOne);
+                previousOne = k;
+            }
+        }
+
+        ans.push_back(minGap == INT_MAX ? -1 : minGap);
+    }
+
+    return ans;
+}
+
+
+void buildTree(int index, int start, int end, vector<int> &nums) {
+    if (start > end)
+        return;
+
+    if (start == end) {
+        bitset<101> b;
+        b[nums[start]] = 1;
+
+        segTree[index] = b;
+        return;
+    }
+
+    // Build the range
+    int mid = (start + end) / 2;
+    buildTree(index * 2, start, mid, nums);
+    buildTree(index * 2 + 1, mid + 1, end, nums);
+
+    segTree[index] = segTree[2 * index] | segTree[2 * index + 1];
+}
+
+
+bitset<101> queryTree(int index, int start, int end, int queryStart, int queryEnd) {
+    // Base Cases -
+    if (start > end) return bitset<101>();
+    // if out of range
+    if (queryEnd < start or queryStart > end)
+        return bitset<101>();
+
+    // If complete range
+    if (start >= queryStart and queryEnd >= end)
+        return segTree[index];
+
+    // If incomplete range
+    int mid = (start + end) / 2;
+    auto left = queryTree(index * 2, start, mid, queryStart, queryEnd);
+    auto right = queryTree(index * 2 + 1, mid + 1, end, queryStart, queryEnd);
+
+    return left | right;
+}
