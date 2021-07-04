@@ -75,3 +75,54 @@ public:
         return intervals;
     }
 };
+
+
+
+// 3. 1905. Count Sub Islands
+void visitIslandDFS(vector<vector<int>>& grid1, vector<vector<int>>& grid2, vector<vector<bool>>& visited, int i, int j, bool &sub) {
+    // Base Case -
+    if (i < 0 or j < 0 or i >= grid2.size() or j >= grid2[0].size())
+        return;
+
+    if (grid2[i][j] == 0 or visited[i][j] == true)
+        return;
+
+    visited[i][j] = true;
+    if (grid1[i][j] != 1 and grid2[i][j] == 1)
+        sub = false;
+
+    // Now from here, go to all it's neighbors
+    int dx [] = {0, 1, -1, 0};
+    int dy [] = {1, 0, 0, -1};
+
+    for (int k = 0; k < 4; k++)
+        visitIslandDFS(grid1, grid2, visited, i + dx[k], j + dy[k], sub);
+}
+
+
+int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
+    int n = grid1.size();
+    int m = grid1[0].size();
+
+    // Approach -
+    // 1. Try BFS / DFS with a visited array to find the island.
+    // 2. Ek bool value bhi hoga if uss particular island pe grid1 ni hua toh false answer hai.
+
+    vector<vector<bool>> visited(n, vector<bool> (m, false));
+    int res = 0;
+
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (visited[i][j] == false and grid2[i][j] == 1) {
+                bool isSubIsland = true;
+                visitIslandDFS(grid1, grid2, visited, i, j, isSubIsland);
+
+                if (isSubIsland)
+                    res++;
+            }
+        }
+    }
+
+    return res;
+}
