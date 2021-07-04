@@ -40,7 +40,6 @@ void dijkstraAlgorithm(int src, int v, vector<pair<int, int>> adjList[]) {
 
 	// Put the first element to start traversal
 	pq.push(Pair(src, src + "", 0));
-	visited[src] = true;
 
 	while (!pq.empty()) {
 		Pair curr = pq.top();
@@ -50,6 +49,9 @@ void dijkstraAlgorithm(int src, int v, vector<pair<int, int>> adjList[]) {
 		if (visited[curr.v] == true)
 			continue;
 
+
+		// Mark as visited
+		visited[curr.v] = true;
 		// Print the details
 		cout << curr.v << " via " << curr.pathSoFar << " @ " << curr.weightSoFar << endl;
 
