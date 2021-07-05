@@ -53,3 +53,39 @@ int eliminateMaximum(vector<int>& dist, vector<int>& speed) {
 
 	return res;
 }
+
+
+// 3. 1922. Count Good Numbers
+
+long long modPower(long long a, long long b, long long mod) {
+	long long res = 1;
+
+	while (b) {
+		if (b & 1)
+			res = (res * a) % mod;
+
+		a = (a * a) % mod;
+		b = b >> 1;
+	}
+
+	return res;
+}
+
+int countGoodNumbers(long long n) {
+	int ans;
+
+	long long even = n / 2;
+	long long odd = n / 2;
+	long long mod = 1e9 + 7;
+
+	if (n & 1)
+		even++;
+
+	long long e = 5;
+	long long o = 4;
+	long long evenPow = modPower(e, even, mod);
+	long long oddPow = modPower(o, odd, mod);
+
+
+	return ((evenPow % mod) * (oddPow % mod)) % mod;
+}
