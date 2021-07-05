@@ -33,26 +33,53 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-int findMaxUndefendedBlock(int width, int height, int n, vector<int> &x, vector<int> &y) {
-	// Sort the co-ordinates
-	sort(x.begin(), x.end());
-	sort(y.begin(), y.end());
+void dfsTimeIt(int src, vector<int> adjList[], vector<bool> &vis, int &timer, vector<int> &startTime, vector<int> &endTime) {
+	vis[src] = true;
+	startTime[src] = timer++;
 
-	// Find the max difference between any 2 place
-	int maxDiffX = x[0] - 1;
-	int maxDiffY = y[0] - 1;
-
-
-	for (int i = 1; i < n; i++) {
-		maxDiffX = max(maxDiffX, x[i] - x[i - 1] - 1);
-		maxDiffY = max(maxDiffY, y[i] - y[i - 1] - 1);
+	for (auto nbr : adjList[src]) {
+		if (vis[nbr] == false) {
+			dfsTimeIt(nbr, adjList, vis, timer, startTime, endTime);
+		}
 	}
 
-	// For the last tower, we need to match with end of field
-	maxDiffX = max(maxDiffX, width - x[n - 1]);
-	maxDiffY = max(maxDiffY, height - y[n - 1]);
+	endTime[src] = timer++;
+}
 
-	return maxDiffX * maxDiffY;
+
+void isPossibleToFind(int n, vector<pair<int, int>> &edgeList, int q, vector<vector<int>> &queries) {
+	// Convert edge list to adj list
+	vector<int> adjList[n];
+	for (int i = 0; i < edgeList.size(); i++) {
+		adjList[edgeList[i].first].push_back(edgeList[i].second);
+	}
+
+	vector<bool> vis(n, false);
+	vector<int> startTime(n, 0);
+	vector<int> endTime(n, 0);
+	int timer = 0;
+
+	// Store the start time and end time of the nodes
+	dfsTimeIt(0, adjList, vis, timer, startTime, endTime);
+
+	for (int i = 0; i < queries.size(); i++) {
+		int dir = queries[i][0], dest = queries[i][1], src = queries[i][2];
+
+		if (dir == 0) {
+			if (startTime[src] > startTime[dest] and endTime[src] < endTime[dest])
+				cout << "YES" << endl;
+			else
+				cout << "NO" << endl;
+		} else {
+			if (startTime[dest] > startTime[src] and endTime[dest] < endTime[src])
+				cout << "YES" << endl;
+			else
+				cout << "NO" << endl;
+		}
+	}
+
+	// cout<<"Test"<<endl;
+	return;
 }
 
 
@@ -63,7 +90,20 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
+	int n; cin >> n;
+	vector<pair<int, int>> edgeList;
+	for (int i = 0; i < n - 1; i++) {
+		int u, v; cin >> u >> v;
+		edgeList.push_back({u - 1, v - 1});
+	}
+	int q; cin >> q;
+	vector<vector<int>> queries;
+	for (int i = 0; i < q; i++) {
+		int a, b, c; cin >> a >> b >> c;
+		queries.push_back({a, b - 1, c - 1});
+	}
 
+	isPossibleToFind(n, edgeList, q, queries);
 
 	return 0;
 }
