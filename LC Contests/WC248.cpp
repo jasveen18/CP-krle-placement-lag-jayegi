@@ -5,7 +5,6 @@
 ******************************************/
 
 // 1.1920. Build Array from Permutation
-
 // O(N) T | O(N) S
 vector<int> buildArray(vector<int>& nums) {
 	vector<int> res(nums.size(), 0);
@@ -17,7 +16,22 @@ vector<int> buildArray(vector<int>& nums) {
 }
 
 // O(N) T | O(1) S
+// Idea is to store 2 data into one element.
+// So, jo original num hoga that will be -> (size * nums[i])
+// And jo pehle tha waha pe that will be (nums[i] % size)
 
+vector<int> buildArray(vector<int> &nums) {
+	int n = nums.size();
+
+	for (int i = 0; i < n; i++) {
+		nums[i] = nums[i] + (n * (nums[nums[i]] % n));
+	}
+
+	for (int i = 0; i < n; i++)
+		nums[i] /= n;
+
+	return nums;
+}
 
 
 // 2. 1921. Eliminate Maximum Number of Monsters
