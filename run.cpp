@@ -83,6 +83,48 @@ void isPossibleToFind(int n, vector<pair<int, int>> &edgeList, int q, vector<vec
 }
 
 
+int isPalindrome(int A) {
+	if (A < 0)
+		return 0;
+
+	long long int dummy = A;
+	long long int n = A;
+
+	long long int start = 1;
+	long long int end = 10;
+	int i = 0, j = 0;
+
+
+	// Count the power of 10 required
+	while (dummy) {
+		j++;
+		start *= 10;
+		dummy /= 10;
+	}
+	start /= 10;
+
+	long long int startKeLie = n;
+	long long int endKeLie = n;
+
+	while (i < j) {
+		int lastDig = endKeLie % 10;
+		endKeLie /= 10;
+
+		int firstDig = startKeLie / start;
+		startKeLie %= start;
+		start /= 10;
+
+		// cout << firstDig << " " << lastDig << endl;
+		if (firstDig != lastDig)
+			return 0;
+		i++; j--;
+	}
+
+	return 1;
+}
+
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -90,20 +132,9 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n; cin >> n;
-	vector<pair<int, int>> edgeList;
-	for (int i = 0; i < n - 1; i++) {
-		int u, v; cin >> u >> v;
-		edgeList.push_back({u - 1, v - 1});
-	}
-	int q; cin >> q;
-	vector<vector<int>> queries;
-	for (int i = 0; i < q; i++) {
-		int a, b, c; cin >> a >> b >> c;
-		queries.push_back({a, b - 1, c - 1});
-	}
-
-	isPossibleToFind(n, edgeList, q, queries);
+	cout << isPalindrome(2147412);
+	// cout << 12345 % 10 << endl;
+	// cout << 1234 % 10 << endl;
 
 	return 0;
 }
