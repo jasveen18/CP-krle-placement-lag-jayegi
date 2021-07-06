@@ -217,6 +217,50 @@ string convert(string A, int B) {
 	return res;
 }
 
+string mult2(string s) {
+	reverse(s.begin(), s.end());
+	int carry = 0;
+
+	vector<int> nums;
+	for (int i = 0; i < s.size(); i++) {
+		nums.push_back(s[i] - '0');
+	}
+
+	for (int i = 0; i < nums.size(); i++) {
+		int here = nums[i] * 2 + carry;
+		carry = here / 10;
+		nums[i] = here % 10;
+	}
+
+	while (carry) {
+		nums.push_back(carry % 10);
+		carry /= 10;
+	}
+
+	reverse(nums.begin(), nums.end());
+	string res = "";
+	for (int i = 0; i < nums.size(); i++) {
+		res += (nums[i] + '0');
+	}
+
+	// deb(res);
+
+	return res;
+}
+
+int power(string A) {
+	string res = "1";
+
+	while (res < A) {
+		if (res == A)
+			return 1;
+		// cout << res << " ";
+		res = mult2(res);
+	}
+
+	return 1;
+}
+
 
 
 int main() {
@@ -226,7 +270,8 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << convert("paypalishiring", 3) << endl;
+	cout << power("1023");
+
 
 	return 0;
 }
