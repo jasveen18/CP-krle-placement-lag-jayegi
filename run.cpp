@@ -204,6 +204,18 @@ int uniquePaths(int A, int B) {
 	return (1 << ((A - 1) * (B - 1)));
 }
 
+string convert(string A, int B) {
+	string res = "";
+	int n = A.size();
+
+	for (int i = 0; i < B; i++) {
+		for (int j = i; j < n; j += (B + 1))
+			res += A[j];
+		cout << res << endl;
+	}
+
+	return res;
+}
 
 
 
@@ -214,7 +226,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << uniquePaths(15, 9); // 319770
+	cout << convert("paypalishiring", 3) << endl;
 
 	return 0;
 }
