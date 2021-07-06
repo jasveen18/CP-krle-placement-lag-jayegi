@@ -21,7 +21,7 @@ int Solution::solve(int A) {
     // I need to find the Nth Fib.
     // One of the approaches that I can think of is to use matrix exponentiation for fib numbers
     // T * A(n-1) = F(N)
-    // where T = [[1, 0],[0, 1]].
+    // where T = [[1, 0],[1, 1]].
 
     // There is one more approach that uses formulas and Dp.
     int mod = 1e9 + 7;
