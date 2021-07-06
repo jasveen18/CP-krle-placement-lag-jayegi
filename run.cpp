@@ -124,6 +124,83 @@ int isPalindrome(int A) {
 }
 
 
+vector<long long> factorial(int n, int mod) {
+	vector<long long> res(n + 1, 0);
+	res[0] = 1;
+	res[1] = 1;
+
+	for (int i = 2; i <= n; i++) {
+		res[i] = (res[i - 1] * i) % mod;
+	}
+
+	return res;
+}
+
+int findRank(string A) {
+	// Permutation of any number is n!.
+	int mod = 1000003;
+	int n = A.size();
+
+	vector<long long> fact = factorial(n, mod);
+
+	string sortedStr = A;
+	sort(sortedStr.begin(), sortedStr.end());
+
+	int firstUnmatchedIdx = 0;
+	while (firstUnmatchedIdx < n and A[firstUnmatchedIdx] == sortedStr[firstUnmatchedIdx])
+		firstUnmatchedIdx++;
+
+	if (firstUnmatchedIdx == n)
+		return 1;
+
+	unordered_map<char, int> idxQuickAccess;
+	for (int i = 0; i < n; i++)
+		idxQuickAccess[sortedStr[i]] = i;
+
+	int res = 0;
+	deb(firstUnmatchedIdx);
+	for (int i = firstUnmatchedIdx; i < n; i++) {
+		if (A[i] != sortedStr[i]) {
+			int valueHere = (fact[n - i - 1] * idxQuickAccess[A[i]]) % mod;
+			res += valueHere % mod;
+			// cout << i << " " << res << endl;
+			deb2(fact[n - i - 1], idxQuickAccess[A[i]]);
+		}
+	}
+
+	return res;
+}
+
+
+int solve(int A, vector<int> &B) {
+	int n = A;
+	int sumAll = 0;
+	for (int i = 0; i < n; i++)
+		sumAll += B[i];
+	int sumEach = sumAll / 3;
+
+	if (sumAll % 3 != 0 or B.size() < 3)
+		return 0;
+
+	int oneThirdCount = 0;
+	int oneThirdSum = sumEach;
+	int twoThirdSum = 2 * sumEach;
+	int count = 0;
+
+	int currSum = 0;
+	for (int i = 0; i < n - 1; i++) {
+		currSum += B[i];
+		if (currSum == twoThirdSum)
+			count += oneThirdCount;
+		if (currSum == oneThirdSum)
+			oneThirdCount++;
+	}
+
+	return count;
+}
+
+
+
 
 int main() {
 	blink
@@ -132,9 +209,10 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << isPalindrome(2147412);
-	// cout << 12345 % 10 << endl;
-	// cout << 1234 % 10 << endl;
+	vector<int> test {0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int n = test.size();
+
+	cout << solve(n, test);
 
 	return 0;
 }
