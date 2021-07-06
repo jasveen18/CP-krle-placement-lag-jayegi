@@ -200,6 +200,11 @@ int solve(int A, vector<int> &B) {
 }
 
 
+int uniquePaths(int A, int B) {
+	return (1 << ((A - 1) * (B - 1)));
+}
+
+
 
 
 int main() {
@@ -209,10 +214,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	vector<int> test {0, 0, 0, 0, 0, 0, 0, 0, 0};
-	int n = test.size();
-
-	cout << solve(n, test);
+	cout << uniquePaths(15, 9); // 319770
 
 	return 0;
 }
