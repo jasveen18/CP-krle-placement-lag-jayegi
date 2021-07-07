@@ -136,6 +136,7 @@ vector<long long> factorial(int n, int mod) {
 	return res;
 }
 
+
 int findRank(string A) {
 	// Permutation of any number is n!.
 	int mod = 1000003;
