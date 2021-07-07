@@ -262,7 +262,6 @@ int power(string A) {
 }
 
 
-
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
