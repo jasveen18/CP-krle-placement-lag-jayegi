@@ -16,7 +16,7 @@ int Solution::solve(int A) {
     int mod = 1e9 + 7;
     long long count = 0;
 
-    A++;
+    A++; // to account for zero.
 
     int powerOf2 = 2;
     count = A / 2;
