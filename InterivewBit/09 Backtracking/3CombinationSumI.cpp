@@ -27,6 +27,8 @@ void findTheCombinations(vector<int> &nums, int i, int &sum, vector<int> &curr, 
     // Include
     curr.push_back(nums[i]);
     sum += nums[i];
+
+    // findTheCombinations(nums, i + 1, sum, curr, res, k); // For combinationsumII, where we can't use same element twice
     findTheCombinations(nums, i, sum, curr, res, k);
 
     // Backtrack
