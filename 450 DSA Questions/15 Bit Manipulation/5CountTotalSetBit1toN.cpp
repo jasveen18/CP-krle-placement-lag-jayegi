@@ -28,7 +28,7 @@ int countSetBits(int n) {
 		count += (totalPairs / 2) * powerOf2;
 		count += (totalPairs & 1) ? (n % powerOf2) : 0;
 
-		powerOf2 << 1;
+		powerOf2 <<= 1;
 	}
 
 	return count;
