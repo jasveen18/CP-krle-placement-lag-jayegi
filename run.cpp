@@ -346,6 +346,40 @@ vector<int> grayCode(int A) {
 }
 
 
+class CustomStack {
+private:
+	int maxSize;
+	vector<int> st;
+	int top;
+
+public:
+	CustomStack(int size) {
+		maxSize = size;
+		top = -1;
+		st = vector<int> (size);
+	}
+
+	void push(int x) {
+		st[++top] = x;
+	}
+
+	int pop() {
+		return st[top--];
+	}
+
+	int peek() {
+		return st[top];
+	}
+
+	bool isEmpty() {
+		return top == -1;
+	}
+
+	bool isFull() {
+		return top == maxSize - 1;
+	}
+};
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -353,6 +387,15 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	grayCode(3);
+	CustomStack c(10);
+	cout << c.isEmpty() << endl;
+	c.push(12);
+	c.push(14);
+	c.push(15);
+
+	cout << c.peek() << endl;
+	cout << c.pop() << endl;
+	cout << c.peek() << endl;
+
 	return 0;
 }
