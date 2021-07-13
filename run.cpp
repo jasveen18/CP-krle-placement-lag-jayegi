@@ -380,6 +380,46 @@ public:
 	}
 };
 
+
+int vowelAndCons(string A) {
+	int mod = 1e9 + 7;
+	int n = A.size();
+	vector<int> vowels(n, 0);
+	vector<int> consonants(n, 0);
+
+	vowels[n - 1] = A[n - 1] == 'a' or A[n - 1] == 'e' or A[n - 1] == 'i' or A[n - 1] == 'o' or A[n - 1] == 'u';
+	consonants[n - 1] = A[n - 1] != 'a' or A[n - 1] != 'e' or A[n - 1] != 'i' or A[n - 1] != 'o' or A[n - 1] != 'u';
+	for (int i = n - 2; i >= 0; i--) {
+		vowels[i] = vowels[i + 1] + (A[i] == 'a' or A[i] == 'e' or A[i] == 'i' or A[i] == 'o' or A[i] == 'u');
+		consonants[i] = consonants[i + 1] + (A[i] != 'a' and A[i] != 'e' and A[i] != 'i' and A[i] != 'o' and A[i] != 'u');
+
+	}
+
+	long long res = 0;
+	for (int i = 0; i < n; i++) {
+		if ((A[i] == 'a' or A[i] == 'e' or A[i] == 'i' or A[i] == 'o' or A[i] == 'u')) {
+			res += (consonants[i]) % mod;
+		} else {
+			res += (vowels[i]) % mod;
+		}
+	}
+
+
+	for (int i = 0; i < n; i++) {
+		cout << vowels[i] << " ";
+	} cout << endl;
+
+
+
+	for (int i = 0; i < n; i++) {
+		cout << consonants[i] << " ";
+	} cout << endl;
+
+
+	return res % mod;
+}
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -387,15 +427,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	CustomStack c(10);
-	cout << c.isEmpty() << endl;
-	c.push(12);
-	c.push(14);
-	c.push(15);
-
-	cout << c.peek() << endl;
-	cout << c.pop() << endl;
-	cout << c.peek() << endl;
+	cout << vowelAndCons("oxewkahvgkctwcchvhzdifi");
 
 	return 0;
 }
