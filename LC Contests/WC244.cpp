@@ -131,3 +131,32 @@ int minFlips(string s) {
 
 	return ans;
 }
+
+
+// 4. 1889. Minimum Space Wasted From Packaging
+int minWastedSpace(vector<int> &packages, vector<vector<int>> &boxes) {
+	sort(packages.begin(), packages.end());
+	long long res = LONG_MAX;
+	long long sumA = 0;
+	int mod = 1e9 + 7;
+
+	for (auto el : packages)
+		sumA += el;
+
+	for (auto &b : boxes) {
+		sort(b.begin(), b.end());
+
+		if (b[b.size() - 1] < packages[packages.size() - 1]) continue; // If iss supplier ke saath saare package fit ni honge
+
+		long long curr = 0, i = 0, j;
+		for (int boxes : b) {
+			j = upper_bound(packages.begin(), packages.end(), boxes) - packages.begin();
+			curr += boxes * (j - i);
+			i = j;
+		}
+
+		res = min(res, curr);
+	}
+
+	return res < LONG_MAX ? (res - sumA) % mod : -1;
+}
