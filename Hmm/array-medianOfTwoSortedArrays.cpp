@@ -41,7 +41,7 @@
 
 double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2) {
 	// We are considering nums1 to be larger.
-	if (nums1.size() < nums2.size())
+	if (nums1.size() > nums2.size())
 		return findMedianSortedArrays(nums2, nums1);
 
 	int n1 = nums1.size();
