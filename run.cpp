@@ -33,91 +33,30 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-string divBy2(string s) {
-	int n = s.size();
-	int i = 0;
-	string res = "";
-	int carry = 0;
-
-	while (i < n) {
-		if ((s[i] - '0') < 2) {
-			if (i == n - 1)
-				return "3"; // Odd number
-
-			res += (((s[i] - '0') * 10 + s[i + 1] - '0') / 2) + '0';
-			carry = (((s[i] - '0') * 10 + s[i + 1] - '0') % 2);
-
-			if (!carry)
-				i += 2;
-			else {
-				i++;
-				s[i] = carry + '0';
-			}
-		} else {
-			res += ((s[i] - '0') / 2) + '0';
-			carry = ((s[i] - '0') % 2);
-
-			if (!carry)
-				i++;
-			else
-				s[i] = carry + '0';
-		}
-
-		// deb(s);
+int countSets(int A) {
+	int count = 0;
+	while (A) {
+		count++;
+		A &= (A - 1);
 	}
 
-	// Remove zeroes at the beginning
-	int idx = 0;
-	for (int i = 0; i < res.size(); i++) {
-		if (res[i] != '0') {
-			idx = i;
-			break;
-		}
-	}
-
-	return res.substr(idx);
+	return count;
 }
 
 
-int Solution::power(string A) {
-
-	if (A == “2”) return 1;
-
-	int n = A.length();
-
-	if ((A[n - 1] - ‘0’) % 2 == 1) return 0;
-
-	int carry = 0;
-
-	string ans = "";
-
-	bool b = true;
+int cntBits(vector<int> A) {
+	int res = 0;
+	int mod = 1e9 + 7;
+	int n = A.size();
 
 	for (int i = 0; i < n; i++) {
-
-		int a = A[i] - ‘0’;
-
-		a += carry * 10;
-
-		carry = a % 2;
-
-		a /= 2;
-
-		if (!b || a != 0) {
-
-			ans += a + ‘0’;
-
-			b = false;
-
+		for (int j = 0; j < n; j++) {
+			res += countSets(A[i] ^ A[j]) % mod;
 		}
-
 	}
 
-	return power(ans);
-
+	return res;
 }
-
-
 
 int main() {
 	blink
@@ -125,9 +64,7 @@ int main() {
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
 #endif
-
-	cout << power("147573952589676412928") << endl;
-	// cout << (('1' - '0') * 10 + ('6' - '0')) / 2;
+	cout << endl << cntBits({1, 3, 5, 6});
 
 	return 0;
 }
