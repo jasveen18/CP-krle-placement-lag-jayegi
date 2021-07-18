@@ -39,5 +39,6 @@ vector<int> nextLargerElement(vector<int> &nums) {
 		st.push(nums[i]);
 	}
 
+	reverse(res.begin(), res.end());
 	return res;
 }
