@@ -33,30 +33,6 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-int countSets(int A) {
-	int count = 0;
-	while (A) {
-		count++;
-		A &= (A - 1);
-	}
-
-	return count;
-}
-
-
-int cntBits(vector<int> A) {
-	int res = 0;
-	int mod = 1e9 + 7;
-	int n = A.size();
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			res += countSets(A[i] ^ A[j]) % mod;
-		}
-	}
-
-	return res;
-}
 
 int main() {
 	blink
