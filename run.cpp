@@ -33,41 +33,28 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-int sumMinMaxWindowK(vector<int> &nums, int k) {
-	int n = nums.size();
-	list<int> maxDq, minDq;
-
-	int i = 0, j = 0, ans = 0;
-
-	while (j < n) {
-		// Empty the elements smaller than the curr from dq for max
-		while (maxDq.empty() == false and maxDq.back() < nums[i])
-			maxDq.pop_back();
-		maxDq.push_back(nums[i]);
-
-		// Empty the elements larger than the curr from dq for min
-		while (minDq.empty() == false and minDq.back() > nums[i])
-			minDq.pop_back();
-		minDq.push_back(nums[i]);
-
-
-		if (j - i + 1 < k)
-			j++;
-		else if (j - i + 1 == k) {
-			// Do the calculation
-			ans += (maxDq.front() + minDq.front());
-
-			// Slide the window
-			if (maxDq.front() == nums[i])
-				maxDq.pop_front();
-			if (minDq.front() == nums[i])
-				minDq.pop_front();
-
-			i++; j++;
-		}
+void insertAtBottom(stack<int> &st, int element) {
+	if (st.empty()) {
+		st.push(element);
+		return;
 	}
 
-	return ans;
+	int topEl = st.top(); st.pop();
+	insertAtBottom(st, element);
+
+	st.push(topEl);
+	return;
+}
+
+void reverseStack(stack<int> &st) {
+	if (st.empty())
+		return;
+
+	int topEl = st.top(); st.pop();
+	reverseStack(st);
+
+	insertAtBottom(st, topEl);
+	return;
 }
 
 
@@ -77,7 +64,29 @@ int main() {
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
 #endif
-	cout << endl << cntBits({1, 3, 5, 6});
+	// cout << endl << cntBits({1, 3, 5, 6});
+	stack<int> st;
+	st.push(1);
+	st.push(2);
+	st.push(3);
+	st.push(4);
+
+	while (st.empty() == false) {
+		cout << st.top() << endl; st.pop();
+	}
+
+	cout << endl;
+
+	st.push(1);
+	st.push(2);
+	st.push(3);
+	st.push(4);
+
+	reverseStack(st);
+
+	while (st.empty() == false) {
+		cout << st.top() << endl; st.pop();
+	}
 
 	return 0;
 }
