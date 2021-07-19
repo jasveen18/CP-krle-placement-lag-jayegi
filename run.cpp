@@ -33,27 +33,29 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void insertAtBottom(stack<int> &st, int element) {
-	if (st.empty()) {
+void insertAtCorrectPosition(stack<int> &st, int element) {
+	if (st.empty() or st.top() <= element) {
 		st.push(element);
 		return;
 	}
 
 	int topEl = st.top(); st.pop();
-	insertAtBottom(st, element);
+	insertAtCorrectPosition(st, element);
 
 	st.push(topEl);
 	return;
 }
 
-void reverseStack(stack<int> &st) {
+
+void sortStack(stack<int> &st) {
 	if (st.empty())
 		return;
 
 	int topEl = st.top(); st.pop();
-	reverseStack(st);
+	sortStack(st);
 
-	insertAtBottom(st, topEl);
+	insertAtCorrectPosition(st, topEl);
+
 	return;
 }
 
@@ -68,7 +70,12 @@ int main() {
 	stack<int> st;
 	st.push(1);
 	st.push(2);
-	st.push(3);
+	st.push(2);
+	st.push(0);
+	st.push(9);
+	st.push(6);
+	st.push(7);
+	st.push(1);
 	st.push(4);
 
 	while (st.empty() == false) {
@@ -79,10 +86,15 @@ int main() {
 
 	st.push(1);
 	st.push(2);
-	st.push(3);
+	st.push(2);
+	st.push(0);
+	st.push(9);
+	st.push(6);
+	st.push(7);
+	st.push(1);
 	st.push(4);
 
-	reverseStack(st);
+	sortStack(st);
 
 	while (st.empty() == false) {
 		cout << st.top() << endl; st.pop();
