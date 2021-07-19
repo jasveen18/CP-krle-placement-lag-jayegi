@@ -4,14 +4,7 @@
 * INSTITUTION : BIT MESRA *
 ******************************************/
 
-// Problem Statement - Print all the sentence you can make.
-// 1. You are given n space separated strings, which represents a dictionary of words.
-// 2. You are given another string which represents a sentence.
-// 3. You have to print all possible sentences from the string, such that words of the sentence are present in dictionary.
-
-// Input: s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
-// Output: ["cats and dog","cat sand dog"]
-
+// Problem Statement - Word Break II
 void wordBreakRec(string s, string ans, unordered_set<string> dict, vector<string> &res) {
 	// Base Case
 	if (s.size() == 0) {
@@ -51,4 +44,3 @@ vector<string> Solution::wordBreak(string A, vector<string> &B) {
 
 	return res;
 }
-
