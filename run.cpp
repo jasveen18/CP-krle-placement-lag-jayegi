@@ -58,6 +58,33 @@ void sortStack(stack<int> &st) {
 
 	return;
 }
+int longestSubstringAllUnique(string s) {
+	int size = s.size();
+	unordered_map<char, int> count;
+	int res = INT_MIN;
+
+	int i = 0, j = 0;
+	while (j < size) {
+		count[s[j]]++;
+
+		if (count.size() == j - i + 1) {
+			res = max(res, (j - i + 1));
+			j++;
+		} else if (count.size() < j - i + 1) {
+			while (count.size() < j - i + 1) {
+				count[s[i]]--;
+				if (count[s[i]] == 0) // Remove element if count hits 0
+					count.erase(s[i]);
+
+				i++;
+			}
+
+			j++;
+		}
+	}
+
+	return res;
+}
 
 
 int main() {
@@ -67,38 +94,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 	// cout << endl << cntBits({1, 3, 5, 6});
-	stack<int> st;
-	st.push(1);
-	st.push(2);
-	st.push(2);
-	st.push(0);
-	st.push(9);
-	st.push(6);
-	st.push(7);
-	st.push(1);
-	st.push(4);
-
-	while (st.empty() == false) {
-		cout << st.top() << endl; st.pop();
-	}
-
-	cout << endl;
-
-	st.push(1);
-	st.push(2);
-	st.push(2);
-	st.push(0);
-	st.push(9);
-	st.push(6);
-	st.push(7);
-	st.push(1);
-	st.push(4);
-
-	sortStack(st);
-
-	while (st.empty() == false) {
-		cout << st.top() << endl; st.pop();
-	}
+	cout << longestSubstringAllUnique("Wnb9z9dMc7E8v1RTUaZPoDNIAXRlzkqLaa97KMWLzbitaCkRpiE4J4hJWhRcGnC8H6mwasgDfZ76VKdXhvEYmYrZY4Cfmf4HoSlchYWFEb1xllGKyEEmZOLPh1V6RuM7Mxd7xK72aNrWS4MEaUmgEn7L4rW3o14Nq9l2EN4HH6uJWljI8a5irvuODHY7A7ku4PJY2anSWnfJJE1w8p12Ks3oZRxAF3atqGBlzVQ0gltOwYmeynttUmQ4QBDLDrS4zn4VRZLosOITo4JlIqPD6t4NjhHThOjJxpMp9fICkrgJeGiDAwsb8a3I7Txz5BBKV9bEfMsKNhCuY3W0ZHqY0MhBfz1CbYCzwZZdM4p65ppP9s5QJcfjadmMMi26JKz0TVVwvNA8LP5Vi1QsxId4SI19jfcUH97wmZu0pbw1zFtyJ8GAp5yjjQTzFIboC1iRzklnOJzJld9TMaxqvBNBJKIyDjWrdfLOY8FGMOcPhfJ97Dph35zfxYyUf4DIqFi94lm9J0skYqGz9JT0kiAABQZDazZcNi80dSSdveSl6h3dJjHmlK8qHIlDsqFd5FMhlEirax8WA0v3NDPT8vPhwKpxcnVeu14Gcxr3h1wAXXV0y7Xy9qqB2NQ5HQLJ7cyXAckEYHsLCPSy28xcdNJatx1KLWohOQado4WywJbGvsFR17rKmvOPABweXnFD3odrbSMD4Na4nuBBswvMmFRTUOcf7jZi4z5JnJqXz6hitaPnaEtjoSEBq82a52nvqYy7hhldBoxen2et2OMadVEHeTYLL7GLsIhTP6UizHIuzcJMljo4lFgW5AyrfUlIBPAlhwaSiJtTvcbVZynDSM6RO1PqFKWKg2MHIgNhjuzENg2oFCfW7z5KJvEL9qWqKzZNc0o3BMRjS04NCHFvhtsteQoQRgz84XZBHBJRdekCdcVVXu9c01gYRAz7oIAxN3zKZb64EFKssfQ4HW971jv3H7x5E9dAszA0HrKTONyZDGYtHWt4QLhNsIs8mo4AIN7ecFKewyvGECAnaJpDn1MTTS4yTgZnm6N6qnmfjVt6ZU51F9BxH0jVG0kovTGSjTUkmb1mRTLQE5mTlVHcEz3yBOh4WiFFJjKJdi1HBIBaDL4r45HzaBvmYJPlWIomkqKEmQ4rLAbYG7C5rFfpMu8rHvjU7hP0JVvteGtaGn7mqeKsn7CgrJX1tb8t0ldaS3iUy8SEKAo5IZHNKOfEaij3nI4oRVzeVOZsH91pMsA4jRYgEohubPW8ciXwVrFi1qEWjvB8gfalyP60n1fHyjsiLW0T5uY1JzQWHKCbLVh7QFoJFAEV0L516XmzIo556yRH1vhPnceOCjebqgsmO78AQ8Ir2d4pHFFHAGB9lESn3OtJye1Lcyq9D6X93UakA3JKVKEt6JZDLVBMp4msOefkPKSw59Uix9d9kOQm8WCepJTangdNSOKaxblZDNJ5eHvEroYacBhd9UdafEitdF3nfStF7AhkSfQVC61YWWkKTNdx96OoJGTnxuqt4oFZNFtO7aMuN3IJAkw3m3kgZFRGyd3D3wweagNL9XlYtvZwejbjpkDOZz33C0jbEWaMEaUPw6BG49XqyQoUwtriguO0yvWyaJqD4ye3o0E46huKYAsdKAq6MLWMxF6tfyPVaoqOGd0eOBHbAF89XXmDd4AIkoFPXkAOW8hln5nXnIWP6RBbfEkPPbxoToMbV");
 
 	return 0;
 }
