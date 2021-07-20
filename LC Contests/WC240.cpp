@@ -59,6 +59,70 @@ int maxDistance(vector<int>& nums1, vector<int>& nums2) {
 }
 
 
+// 3. 1856. Maximum Subarray Min-Product
+int maxSumMinProduct(vector<int>& nums) {
+	int n = nums.size();
+	stack< pair<long long, int> > nsl;
+	stack< pair<long long, int> > nsr;
+
+	vector<int> idxNSL;
+	vector<int> idxNSR;
+
+	// NSL find kr lete hai
+	for (int i = 0; i < n; i++) {
+		if (nsl.empty())
+			idxNSL.push_back(0);
+		else {
+			while (nsl.empty() == false and nsl.top().first >= nums[i])
+				nsl.pop();
+
+			if (nsl.empty())
+				idxNSL.push_back(0);
+			else
+				idxNSL.push_back(nsl.top().second);
+		}
+
+		nsl.push({nums[i], i});
+	}
+
+	// NSR find kr lete hai
+	for (int i = n - 1; i >= 0; i--) {
+		if (nsr.empty())
+			idxNSR.push_back(n);
+		else {
+			while (nsr.empty() == false and nsr.top().first >= nums[i])
+				nsr.pop();
+
+			if (nsr.empty())
+				idxNSR.push_back(n);
+			else
+				idxNSR.push_back(nsr.top().second);
+		}
+
+		nsr.push({nums[i], i});
+	}
+	reverse(idxNSR.begin(), idxNSR.end());
+
+	vector<long long> prefixSum(n + 1, 0);
+
+	for (int i = 0; i < n; i++)
+		prefixSum[i + 1] = prefixSum[i] + nums[i];
+	// prefixSum[n+1] = prefixSum[n];
+
+	long long res = INT_MIN;
+	int mod = 1e9 + 7;
+
+	for (int i = 0; i < n; i++) {
+		int left = idxNSL[i];
+		int right = idxNSR[i];
+		long long valHere = nums[i] * (prefixSum[right] - prefixSum[left]);
+		cout << valHere << endl;
+
+		res = max(res, valHere) % mod;
+	}
+
+	return res % mod;
+}
 
 
 
