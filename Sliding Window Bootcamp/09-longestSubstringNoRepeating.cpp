@@ -29,6 +29,8 @@ int longestSubstringAllUnique(string s) {
 
 				i++;
 			}
+
+			j++;
 		}
 	}
 
