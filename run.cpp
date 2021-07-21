@@ -89,7 +89,6 @@ string findSubString(string A) {
 		j++;
 	}
 
-	cout << i << " " << res << endl;
 	return A.substr(i, res);
 }
 
