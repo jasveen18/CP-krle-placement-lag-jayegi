@@ -137,6 +137,8 @@ int knight(int A, int B, int C, int D, int E, int F) {
 }
 
 
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -144,8 +146,8 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	// cout << knight(384, 387, 106, 134, 210, 35);
-	cout << knight(2, 20, 1, 18, 1, 5);
+	cout << pickFromBothSides({5, -2, 3, 1, 2}, 3) << endl;
+	// cout << pickFromBothSides({1, 2}, 1) << endl;
 
 	return 0;
 }
