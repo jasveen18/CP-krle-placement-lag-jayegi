@@ -12,8 +12,8 @@ bool KMPPatternMatch(string text, string pattern) {
 	vector<int> tempPatternArray = computeTempArray(pattern);
 
 	int i = 0, j = 0;
-	while (i < tex.size() and j < pattern.size()) {
-		if (tex[i] == pattern[j]) {
+	while (i < text.size() and j < pattern.size()) {
+		if (text[i] == pattern[j]) {
 			i++; j++;
 		}
 
@@ -41,13 +41,13 @@ vector<int> computeTempArray(string pattern) {
 			res[i] = idx + 1;
 			idx++;
 			i++;
-		}
-	} else {
-		if (idx != 0) {
-			idx = res[idx - 1];
 		} else {
-			res[idx] = 0;
-			i++;
+			if (idx != 0) {
+				idx = res[idx - 1];
+			} else {
+				res[idx] = 0;
+				idx++;
+			}
 		}
 	}
 
