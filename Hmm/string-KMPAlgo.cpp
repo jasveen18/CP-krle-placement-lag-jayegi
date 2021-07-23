@@ -33,23 +33,24 @@ bool KMPPatternMatch(string text, string pattern) {
 
 
 vector<int> computeTempArray(string pattern) {
-	vector<int> res(pattern.size(), 0);
-	int idx = 0;
+	vector<int> lps(pattern.size(), 0);
+	int len = 0; // len of previous longest prefix suffix
 
-	for (int i = 1; i < pattern.size();) {
-		if (pattern[i] == pattern[idx]) {
-			res[i] = idx + 1;
-			idx++;
+	int i = 1; // lps[i] for i = 1 to M - 1
+	while (i < pattern.size()) {
+		if (pattern[i] == pattern[len]) {
+			lps[i] = ++len;
 			i++;
 		} else {
-			if (idx != 0) {
-				idx = res[idx - 1];
-			} else {
-				res[idx] = 0;
-				idx++;
+			// If len is not zero
+			if (len != 0)
+				len = lps[len - 1];
+			else {
+				lps[i] = 0;
+				i++;
 			}
 		}
 	}
 
-	return res;
+	return lps;
 }
