@@ -136,6 +136,38 @@ int knight(int A, int B, int C, int D, int E, int F) {
 	return -1;
 }
 
+int lll(string A) {
+	string rev = A;
+	reverse(rev.begin(), rev.end());
+
+	string targetString = A + '$' + rev;
+
+	// Now we need to calculate the LPS array such as in KMP Algorithm
+	vector<int> lps(targetString.size(), 0);
+	int idx = 0;
+
+	// KMP Algo ka LPS hai
+	for (int i = 1; i < targetString.size(); ) {
+		if (targetString[i] == targetString[idx]) {
+			lps[i] = idx + 1;
+			idx++; i++;
+		} else {
+			if (idx != 0) {
+				idx = lps[idx - 1];
+			} else {
+				lps[idx] = 0;
+				i++;
+			}
+		}
+	}
+
+	for (int i = 0; i < lps.size(); i++) {
+		cout << lps[i] << " ";
+	}
+	cout << endl;
+
+	return A.size() - lps[targetString.size() - 1];
+}
 
 
 
@@ -146,8 +178,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << pickFromBothSides({5, -2, 3, 1, 2}, 3) << endl;
-	// cout << pickFromBothSides({1, 2}, 1) << endl;
+	cout << lll("llpbugcswlidtcahvvyctgyxoqe");
 
 	return 0;
 }
