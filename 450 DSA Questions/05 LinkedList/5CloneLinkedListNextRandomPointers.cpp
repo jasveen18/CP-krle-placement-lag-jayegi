@@ -52,3 +52,26 @@ Node* copyRandomList(Node* head) {
 
 	return newHead;
 }
+
+
+
+
+// Approach 2 -
+RandomListNode* Solution::copyRandomList(RandomListNode* A) {
+	unordered_map<RandomListNode*, RandomListNode*> mp;
+	RandomListNode* curr = A;
+
+	while (curr) {
+		mp[curr] = new RandomListNode(curr->label);
+		curr = curr->next;
+	}
+
+	curr = A;
+	while (curr) {
+		mp[curr]->next = mp[curr->next];
+		mp[curr]->random = mp[curr->random];
+		curr = curr->next;
+	}
+
+	return mp[A];
+}
