@@ -44,7 +44,7 @@ Node* copyRandomList(Node* head) {
 		curr->next = newCurr->next;
 
 		if (newCurr->next)
-			newCurr->next = curr->next;
+			newCurr->next = curr->next->next;
 
 		curr = curr->next;
 		newCurr = newCurr->next;
