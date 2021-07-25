@@ -1,1 +1,8 @@
-\\\\
+LIS[i]=2,LDS[i]=5
+LIS[i]=2,LDS[i]=2
+LIS[i]=3,LDS[i]=4
+LIS[i]=3,LDS[i]=3
+LIS[i]=4,LDS[i]=3
+LIS[i]=2,LDS[i]=2
+LIS[i]=1,LDS[i]=1
+6

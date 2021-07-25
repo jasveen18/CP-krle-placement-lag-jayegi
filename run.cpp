@@ -33,142 +33,38 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void nextPermutation(string &s) {
-	int n = s.size();
-	int i = n - 2;
+int longestSubsequenceLength(vector<int> A) {
+	// aka Longest Bitonic Subsequence(LBS)
+	// create Longest Inc Subseq(LIS) and Longest Dec Subseq(LDS)
+	// LBS = max of LIS and LDS - 1
+	int N = A.size();
+	if (N == 0) return 0;
+	vector<int> LIS(N, 1);
+	vector<int> LDS(N, 1);
 
-	while (i >= 0 and s[i] >= s[i + 1])
-		i--;
-
-	if (i == -1)
-		return;
-
-	int j = n - 1;
-	while (j >= 0 and s[j] <= s[i])
-		j--;
-
-	swap(s[i], s[j]);
-	reverse(s.begin() + i + 1, s.end());
-	return;
-}
-
-
-string findSubString(string A) {
-	unordered_map<char, int> count;
-	unordered_map<char, int> present;
-
-	for (auto el : A) {
-		present[el] = 1;
-	}
-	int total = present.size();
-
-	int i = 0, j = 0;
-	int n = A.size();
-	int res = INT_MAX;
-	int start = 0;
-
-	while (j < n) {
-		if (present[A[j]] and count[A[j]] == 0)
-			total--;
-		count[A[j]]++;
-
-		if (total == 0) {
-			while (total == 0) {
-				if (res > j - i + 1) {
-					res = j - i + 1;
-					start = i;
-				}
-
-				count[A[i]]--;
-				if (count[A[i]] == 0 and present[A[i]])
-					total++;
-				i++;
-			}
-		}
-
-		j++;
-	}
-
-	return A.substr(i, res);
-}
-
-
-int knight(int A, int B, int C, int D, int E, int F) {
-	// BFS krte hai
-	int n = A, m = B; // Dimension of board
-	int xs = C - 1, ys = D - 1; // Start position
-	int xt = E - 1, yt = F - 1; // Target position
-
-	// BFS ke lie DS
-	vector<vector<bool>> vis(n, vector<bool>(m, false));
-	queue<pair<int, pair<int, int>>> q;
-	q.push({0, {xs, ys}});
-
-	// Movements
-	vector<int> delx {2, 2, 1, 1, -1, -1, -2, -2};
-	vector<int> dely { -1, 1, -2, 2, -2, 2, -1, 1};
-
-	while (q.empty() == false) {
-		int distance = q.front().first;
-		int xcurr = q.front().second.first;
-		int ycurr = q.front().second.second;
-		q.pop();
-
-		// cout<<xcurr<<" "<<ycurr<<"|";
-
-		// Check for target
-		if (xcurr == xt and ycurr == yt)
-			return distance;
-
-		vis[xcurr][ycurr] = true;
-
-		// BFS for all the directions
-		for (int i = 0; i < 8; i++) {
-			int x = xcurr + delx[i];
-			int y = ycurr + dely[i];
-
-			if (x >= 0 and y >= 0 and x < n and y < m and vis[x][y] == false) {
-				q.push({distance + 1, {x, y}});
-			}
+	for (int i = 1; i < N; i++) {
+		for (int j = 0; j < i; j++) {
+			//standard LIS condition
+			if ((A[i] > A[j]) && (LIS[i] <= LIS[j])) LIS[i] = LIS[j] + 1;
 		}
 	}
 
-	return -1;
-}
-
-int lll(string A) {
-	string rev = A;
-	reverse(rev.begin(), rev.end());
-
-	string targetString = A + '$' + rev;
-
-	// Now we need to calculate the LPS array such as in KMP Algorithm
-	vector<int> lps(targetString.size(), 0);
-	int idx = 0;
-
-	// KMP Algo ka LPS hai
-	for (int i = 1; i < targetString.size(); ) {
-		if (targetString[i] == targetString[idx]) {
-			lps[i] = idx + 1;
-			idx++; i++;
-		} else {
-			if (idx != 0) {
-				idx = lps[idx - 1];
-			} else {
-				lps[idx] = 0;
-				i++;
-			}
+	for (int i = N - 2; i >= 0; i--) {
+		for (int j = N - 1; j > i; j--) {
+			//standard LDS condition
+			if ((A[i] > A[j]) && (LDS[i] <= LDS[j])) LDS[i] = LDS[j] + 1;
 		}
 	}
 
-	for (int i = 0; i < lps.size(); i++) {
-		cout << lps[i] << " ";
+	int max = LIS[0] + LDS[0] - 1;
+	for (int i = 1; i < N; i++) {
+		if (LIS[i] + LDS[i] - 1 > max)
+			max = LIS[i] + LDS[i] - 1;
+		deb2(LIS[i], LDS[i]);
 	}
-	cout << endl;
+	return max;
 
-	return A.size() - lps[targetString.size() - 1];
 }
-
 
 
 int main() {
@@ -178,7 +74,7 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << lll("llpbugcswlidtcahvvyctgyxoqe");
+	cout << longestSubsequenceLength({1, 11, 2, 10, 4, 5, 2, 1});
 
 	return 0;
 }
