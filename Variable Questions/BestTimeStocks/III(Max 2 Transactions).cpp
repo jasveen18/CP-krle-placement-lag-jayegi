@@ -156,11 +156,11 @@ int maxProfit(vector<int>& prices) {
 	for (int i = 1; i < n; i++) {
 		for (int k = 1; k <= K; k++) {
 			minPrice[k] = min(minPrice[k], prices[i] - dp[k - 1]);
-			dp[k][k] = max(dp[k], prices[i] - minPrice[k]);
+			dp[k] = max(dp[k], prices[i] - minPrice[k]);
 		}
 	}
 
-	return dp[K][n - 1];
+	return dp[K];
 }
 
 
