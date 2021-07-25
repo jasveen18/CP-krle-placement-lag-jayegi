@@ -22,3 +22,21 @@ int maxProfit(vector<int>& prices) {
 
     return max(maxProfit, 0);
 }
+
+// approach 2 -> O(N) Time O(1) space
+int maxProfit(vector<int>& prices) {
+    int n = prices.size();
+
+    if (n <= 1)
+        return 0;
+
+    int leastPriceBefore = prices[0];
+    int maxProfit = 0;
+
+    for (int i = 1; i < n; i++) {
+        leastPriceBefore = min(leastPriceBefore, prices[i]);
+        maxProfit = max(maxProfit, prices[i] - leastPriceBefore);
+    }
+
+    return maxProfit;
+}
