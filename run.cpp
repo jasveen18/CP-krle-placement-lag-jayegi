@@ -66,6 +66,40 @@ int longestSubsequenceLength(vector<int> A) {
 
 }
 
+string fractionToDecimal(int A, int B) {
+	if (A == INT_MIN and B == -1)
+		return "2147483648";
+	if (A == 0)
+		return "0";
+
+	string ans = "";
+	if (A > 0 ^ B > 0)
+		ans += '-';
+
+	long n = labs(A), d = labs(d), rem = n % d;
+	ans += to_string(n / d);
+	if (rem == 0)
+		return ans;
+
+	ans += '.';
+	unordered_map<long, long> rs;
+
+	while (rem) {
+		if (rs.find(rem) != rs.end()) {
+			ans.insert(rs[rem], "(");
+			ans += ")";
+			break;
+		}
+
+		rs[rem] = ans.size();
+		rem *= 10;
+		ans += to_string(rem / d);
+		rem %= d;
+	}
+
+	return ans;
+}
+
 
 int main() {
 	blink
@@ -74,7 +108,8 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << longestSubsequenceLength({1, 11, 2, 10, 4, 5, 2, 1});
+	// cout << longestSubsequenceLength({1, 11, 2, 10, 4, 5, 2, 1});
+	cout << fractionToDecimal(-1, -2147483648);
 
 	return 0;
 }
