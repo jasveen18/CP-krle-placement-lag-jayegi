@@ -34,76 +34,27 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-void dfs(vector<vector<int>> &A, vector<vector<int>> &status, int i, int j, int parent, bool blue) {
-	if (A[i][j] < parent)
-		return;
-
-	if (status[i][j] >= 1 and blue)
-		return;
-
-	if (status[i][j] >= 2)
-		return;
-
-	if (blue) {
-		if (status[i][j] == 0)
-			status[i][j]++;
-	}
-	else {
-		if (status[i][j] == 1)
-			status[i][j]++;
-		else
-			status[i][j] = 10;
-	}
-
-	vector<int> delx {0, 0, -1, 1};
-	vector<int> dely {1, -1, 0, 0};
-
-	for (int k = 0; k < 4; k++) {
-		int x = i + delx[k];
-		int y = j + dely[k];
-
-		if (x < 0 or y < 0 or x >= A.size() or y >= A[0].size()) continue;
-		else dfs(A, status, x, y, A[i][j], blue);
-	}
-}
-
-int solve(vector<vector<int> > &A) {
-	int n = A.size();
-	int m = A[0].size();
-	vector<vector<int>> status(n, vector<int>(m, 0)); // 0 -> not visited, 1-> blue water pahuch gya, 2-> red bhi pahuch gya
-
-	// Pehle blue paani pahucha dete hai
-	for (int i = 0; i < n; i++) {
-		if (status[i][0] == 0)
-			dfs(A, status, i, 0, -1, true);
-	}
-	for (int j = 0; j < m; j++) {
-		if (status[0][j] == 0)
-			dfs(A, status, 0, j, -1, true);
-	}
-
-	// Ab red ko bhara jaaye
-	for (int i = 0; i < n; i++) {
-		if (status[i][m - 1] == 0 or status[i][m - 1] == 1)
-			dfs(A, status, i, m - 1, -1, false);
-	}
-	for (int j = 0; j < m; j++) {
-		if (status[n - 1][j] == 0 or status[n - 1][j] == 1)
-			dfs(A, status, n - 1, j, -1, false);
-	}
-
-
-	// Count the nodes
+int solve(vector<vector<int> > &dp) {
 	int res = 0;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			if (status[i][j] == 2)
-				res++;
+	int n = dp.size(), m = dp[0].size();
+
+	for (int i = 1; i < n; i++) {
+		for (int j = 1; j < m; j++) {
+			dp[i][j] = min(min(dp[i][j], dp[i - 1][j - 1]), min(dp[i][j - 1], dp[i - 1][j])) + 1;
+			res = max(res, dp[i][j]);
 		}
 	}
 
-	return res;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cout << dp[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	return res * res;
 }
+
 
 int main() {
 	blink
@@ -112,12 +63,22 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	vector<vector<int>> v  {
-		{1, 2, 2, 3, 5},
-		{3, 2, 3, 4, 4},
-		{2, 4, 5, 3, 1},
-		{6, 7, 1, 4, 5},
-		{5, 1, 1, 2, 4},
+	vector<vector<int>> v
+	{
+		{1, 0, 0, 0, 0, 0},
+		{0, 1, 0, 1, 0, 0},
+		{0, 1, 1, 1, 0, 0},
+		{1, 1, 0, 0, 0, 1},
+		{0, 1, 1, 0, 0, 0},
+		{0, 1, 0, 0, 1, 1},
+		{0, 0, 0, 1, 0, 0},
+		{1, 0, 0, 0, 1, 0},
+		{1, 0, 1, 1, 0, 0},
+		{1, 0, 0, 1, 1, 1},
+		{0, 1, 1, 1, 0, 1},
+		{0, 0, 0, 1, 0, 1},
+		{1, 1, 1, 0, 0, 0},
+		{0, 0, 0, 1, 1, 1},
 	};
 
 	cout << solve(v);
