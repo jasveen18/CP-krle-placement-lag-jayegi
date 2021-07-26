@@ -10,6 +10,7 @@ using namespace std;
 #define endl "\n"
 #define deb(x) cout << #x << "=" << x << endl
 #define deb2(x, y) cout << #x << "=" << x << "," << #y << "=" << y << endl
+#define debvec(x) for (int i=0; i<x.size(); i++) cout<< x[i] << " "
 #define max3(a, b, c) max(a, max(b, c))
 #define min3(a, b, c) min(a, min(b, c))
 #define max4(a, b, c, d) max(a, max3(b, c, d))
@@ -33,71 +34,42 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-int longestSubsequenceLength(vector<int> A) {
-	// aka Longest Bitonic Subsequence(LBS)
-	// create Longest Inc Subseq(LIS) and Longest Dec Subseq(LDS)
-	// LBS = max of LIS and LDS - 1
-	int N = A.size();
-	if (N == 0) return 0;
-	vector<int> LIS(N, 1);
-	vector<int> LDS(N, 1);
 
-	for (int i = 1; i < N; i++) {
-		for (int j = 0; j < i; j++) {
-			//standard LIS condition
-			if ((A[i] > A[j]) && (LIS[i] <= LIS[j])) LIS[i] = LIS[j] + 1;
-		}
+
+vector<int> solve(vector<int> A, vector<int> B, int C) {
+	vector<int> res;
+	priority_queue<int> pq;
+
+	sort(A.begin(), A.end());
+	sort(B.begin(), B.end());
+	int i = A.size() - 1, j = B.size() - 1;
+
+	debvec(A);
+	cout << endl;
+	debvec(B);
+
+	// pq.push(A[i]); pq.push(B[j]);
+
+	while (res.size() < C) {
+		if (i >= 0)
+			pq.push(A[i--]);
+		if (j >= 0)
+			pq.push(B[j--]);
+
+		int one = pq.top(); pq.pop();
+		int second = pq.top(); pq.pop();
+
+		res.push_back(one + second);
+
+		if (one > second)
+			pq.push(one);
+		else
+			pq.push(second);
 	}
 
-	for (int i = N - 2; i >= 0; i--) {
-		for (int j = N - 1; j > i; j--) {
-			//standard LDS condition
-			if ((A[i] > A[j]) && (LDS[i] <= LDS[j])) LDS[i] = LDS[j] + 1;
-		}
-	}
 
-	int max = LIS[0] + LDS[0] - 1;
-	for (int i = 1; i < N; i++) {
-		if (LIS[i] + LDS[i] - 1 > max)
-			max = LIS[i] + LDS[i] - 1;
-		deb2(LIS[i], LDS[i]);
-	}
-	return max;
-
-}
-
-string fractionToDecimal(int A, int B) {
-	if (A == INT_MIN and B == -1)
-		return "2147483648";
-	if (A == 0)
-		return "0";
-
-	string ans = "";
-	if (A > 0 ^ B > 0)
-		ans += '-';
-
-	long n = labs(A), d = labs(d), rem = n % d;
-	ans += to_string(n / d);
-	if (rem == 0)
-		return ans;
-
-	ans += '.';
-	unordered_map<long, long> rs;
-
-	while (rem) {
-		if (rs.find(rem) != rs.end()) {
-			ans.insert(rs[rem], "(");
-			ans += ")";
-			break;
-		}
-
-		rs[rem] = ans.size();
-		rem *= 10;
-		ans += to_string(rem / d);
-		rem %= d;
-	}
-
-	return ans;
+	// sort(res.begin(), res.end(), greater<int>());
+	return res;
 }
 
 
@@ -108,9 +80,9 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	// cout << longestSubsequenceLength({1, 11, 2, 10, 4, 5, 2, 1});
-	cout << fractionToDecimal(-1, -2147483648);
-
+	vector<int> res = solve({59, 63, 65, 6, 46, 82, 28, 62, 92, 96, 43, 28, 37, 92, 5, 3, 54, 93, 83}, {59, 63, 65, 6, 46, 82, 28, 62, 92, 96, 43, 28, 37, 92, 5, 3, 54, 93, 83}, 10);
+	cout << endl;
+	debvec(res);
 	return 0;
 }
 
