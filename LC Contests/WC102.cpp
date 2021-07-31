@@ -142,3 +142,39 @@ public:
         return res % mod;
     }
 };
+
+
+// 4.906. Super Palindromes
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        for (int i = 0, j = s.size() - 1; i <= j; i++, j--)
+            if (s[i] != s[j]) return false;
+        return true;
+    }
+
+    int superpalindromesInRange(string left, string right) {
+        vector<long long> res{1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+        // Generate palindrome numbers from 0 to 10e9
+        for (int i = 1; i < 10000; i++) {
+            string l = to_string(i), r = l; reverse(r.begin(), r.end());
+            res.push_back(stoll(l + r));
+
+            for (int i = 0; i <= 9; i++) {
+                res.push_back(stoll(l + to_string(i) + r));
+            }
+        }
+
+        // Check one by one if the number's square is palindrome or not
+        int ans = 0;
+        for (auto el : res) {
+            long long sq = el * el;
+
+            if (sq >= stoll(left) and sq <= stoll(right) and isPalindrome(to_string(sq)))
+                ans++;
+        }
+
+        return ans;
+    }
+};
