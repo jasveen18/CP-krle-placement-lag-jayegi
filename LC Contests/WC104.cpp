@@ -21,3 +21,24 @@ bool hasGroupsSizeX(vector<int>& deck) {
 
 	return true;
 }
+
+
+// 2. 915. Partition Array into Disjoint Intervals
+int partitionDisjoint(vector<int>& nums) {
+	int n = nums.size();
+	vector<int> rightmin(n);
+
+	rightmin[n - 1] = nums[n - 1];
+	for (int i = n - 2; i >= 0; i--)
+		rightmin[i] = min(rightmin[i + 1], nums[i]);
+
+	int maxleft = INT_MIN;
+	for (int i = 0; i < n - 1; i++) {
+		maxleft = max(nums[i], maxleft);
+
+		if (maxleft <= rightmin[i + 1])
+			return i + 1;
+	}
+
+	return n;
+}
