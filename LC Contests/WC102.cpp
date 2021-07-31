@@ -86,3 +86,59 @@ public:
 
 
 // 3. 907. Sum of Subarray Minimums
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& nums) {
+        int n = nums.size();
+        stack< pair<int, int> > nsl;
+        stack< pair<int, int> > nsr;
+
+        vector<int> idxNSL;
+        vector<int> idxNSR;
+
+        // NSL find kr lete hai
+        for (int i = 0; i < n; i++) {
+            if (nsl.empty())
+                idxNSL.push_back(-1);
+            else {
+                while (nsl.empty() == false and nsl.top().first >= nums[i])
+                    nsl.pop();
+
+                if (nsl.empty())
+                    idxNSL.push_back(-1);
+                else
+                    idxNSL.push_back(nsl.top().second);
+            }
+
+            nsl.push({nums[i], i});
+        }
+
+        // NSR find kr lete hai
+        for (int i = n - 1; i >= 0; i--) {
+            if (nsr.empty())
+                idxNSR.push_back(n);
+            else {
+                while (nsr.empty() == false and nsr.top().first > nums[i])
+                    nsr.pop();
+
+                if (nsr.empty())
+                    idxNSR.push_back(n);
+                else
+                    idxNSR.push_back(nsr.top().second);
+            }
+
+            nsr.push({nums[i], i});
+        }
+        reverse(idxNSR.begin(), idxNSR.end());
+
+        long long int res = 0;
+        int mod = 1e9 + 7;
+
+        for (int i = 0; i < n; i++) {
+            // cout<<nums[i]<<" "<<idxNSL[i]<<" "<<idxNSR[i]<<endl;
+            res += ((((long long int)nums[i] * (i - idxNSL[i])) % mod) * (idxNSR[i] - i)) % mod;
+        }
+
+        return res % mod;
+    }
+};
