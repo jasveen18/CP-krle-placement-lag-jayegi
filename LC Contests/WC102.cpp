@@ -43,3 +43,46 @@ public:
         return nums;
     }
 };
+
+
+// 2. 904. Fruit Into Baskets
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        // The questions boils down to max sliding window with two or less distinct number
+        int i = 0, j = 0;
+        int n = fruits.size();
+        int res = 0;
+        unordered_map<int, int> basket;
+
+        while (j < n) {
+            basket[fruits[j]]++;
+
+            if (basket.size() < 2) {
+                res = max(res, j - i + 1);
+                j++;
+            }
+            else if (basket.size() == 2) {
+                res = max(res, j - i + 1);
+                j++;
+            } else if (basket.size() > 2) {
+
+                while (i < n and basket.size() > 2) {
+                    basket[fruits[i]]--;
+
+                    if (basket[fruits[i]] == 0)
+                        basket.erase(fruits[i]);
+
+                    i++;
+                }
+
+                j++;
+            }
+        }
+
+        return res;
+    }
+};
+
+
+// 3. 907. Sum of Subarray Minimums
