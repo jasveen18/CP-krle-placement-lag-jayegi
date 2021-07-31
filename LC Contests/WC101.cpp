@@ -42,3 +42,46 @@ public:
  * RLEIterator* obj = new RLEIterator(encoding);
  * int param_1 = obj->next(n);
  */
+
+
+
+// 2. Online Stock Span
+class StockSpanner {
+public:
+	int i;
+	stack<pair<int, int>> st;
+
+	StockSpanner() {
+		st = stack<pair<int, int>> ();
+		i = 0;
+	}
+
+	int next(int price) {
+		if (st.empty()) {
+			st.push({price, i++});
+			return 1;
+		}  else {
+			while (st.empty() == false and st.top().first <= price) {
+				st.pop();
+			}
+
+			// Ekdum end m pahuch gye, sab koi hi chota hai merese
+			if (st.empty()) {
+				st.push({price, i++});
+				return i;
+			} else {
+				int res = (i - st.top().second);
+				st.push({price, i++});
+				return res;
+			}
+		}
+
+		return 1;
+	}
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
