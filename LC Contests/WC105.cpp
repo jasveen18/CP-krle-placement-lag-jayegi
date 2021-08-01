@@ -137,3 +137,24 @@ public:
  * int param_1 = obj->insert(v);
  * TreeNode* param_2 = obj->get_root();
  */
+
+
+// 4.920. Number of Music Playlists
+
+int numMusicPlaylists(int n, int goal, int k) {
+	int mod = 1e9 + 7;
+
+	vector<vector<long long>> dp(goal + 1, vector<long long> (n + 1, 0));
+	dp[0][0] = 1; // as cond satisfy
+
+	for (int i = 1; i <= goal; i++) {
+		for (int j = 1; j <= n; j++) {
+			dp[i][j] += dp[i - 1][j - 1] * (n - j + 1); // for first place, n choice, next (n-1) choices, next (n-2) choices. voi hai. Rather than factorial lene se
+			dp[i][j] += dp[i - 1][j] * max(j - k, 0); // If we can include repetitions, or zero se multiply kr do
+
+			dp[i][j] %= mod;
+		}
+	}
+
+	return (int) dp[goal][n];
+}
