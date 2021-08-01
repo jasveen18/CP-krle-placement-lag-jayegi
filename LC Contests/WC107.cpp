@@ -34,3 +34,24 @@ bool isLongPressedName(string name, string typed) {
 
 
 // 2. 926. Flip String to Monotone Increasing
+int minFlipsMonoIncr(string s) {
+	int zero = 0;
+	for (int i = 0; i < s.size(); i++)
+		if (s[i] == '0')
+			zero++;
+
+
+	int res = zero;
+	int flip = 0;
+	for (int i = 0; i < s.size(); i++) {
+		if (s[i] == '0') {
+			zero--;
+		} else {
+			flip++;
+		}
+
+		res = min(res, zero + flip);
+	}
+
+	return res;
+}
