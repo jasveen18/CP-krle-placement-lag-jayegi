@@ -26,6 +26,25 @@ string reverseOnlyLetters(string s) {
 	return res;
 }
 
+// 2. Max Sum Circular Array
+// 2 cases ->
+// 1. Kadane jaisa single pr rhega
+// 2. total sum - (min sum) ab min sum kahi beech se hi milega. Toh usko hata dere hai means circular chal lie
+int maxSubarraySumCircular(vector<int>& nums) {
+	int maxSum = nums[0], minSum = nums[0], curMax = 0, curMin = 0, total = 0;
+
+	for (auto el : nums) {
+		curMax = max(curMax + el, el);
+		maxSum = max(maxSum, curMax);
+
+		curMin = min(curMin + el, el);
+		minSum = min(minSum, curMin);
+
+		total += el;
+	}
+
+	return maxSum > 0 ? max(maxSum, total - minSum) : maxSum;
+}
 
 
 // 3. Complete Binary Tree Inserter
