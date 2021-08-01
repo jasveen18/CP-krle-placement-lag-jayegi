@@ -30,3 +30,30 @@ public:
 		return nums;
 	}
 };
+
+// 2. Min add to make paretheses valid
+class Solution {
+public:
+	int minAddToMakeValid(string s) {
+		int n = s.size();
+		if (n == 0)
+			return 0;
+
+		int open = 0;
+		int res = 0;
+
+		for (int i = 0; i < n; i++) {
+			if (s[i] == '(')
+				open++;
+			else
+				open--;
+
+			if (open < 0) {
+				res++;
+				open = 0;
+			}
+		}
+
+		return res + open;
+	}
+};
