@@ -34,6 +34,27 @@ int numUniqueEmails(vector<string>& emails) {
     return res;
 }
 
+// 2. Number of subarrays with goal as sum
+int numSubarraysWithSum(vector<int>& nums, int goal) {
+    unordered_map<int, int> freq;
+    int res = 0;
+    int curr = 0;
+
+    for (int i = 0; i < nums.size(); i++) {
+        curr += nums[i];
+
+        if (curr == goal) {
+            res++;
+        }
+
+        if (freq.find(curr - goal) != freq.end())
+            res += freq[curr - goal];
+
+        freq[curr]++;
+    }
+
+    return res;
+}
 
 // 3. Min falling path sum
 int minFallingPathSum(vector<vector<int>>& matrix) {
