@@ -45,3 +45,27 @@ vector<string> reorderLogFiles(vector<string>& logs) {
 
 	return logs;
 }
+
+// 2. 938. Range Sum of BST
+class Solution {
+	void inorder(TreeNode* root, int low, int high, int &sum) {
+		if (root == NULL)
+			return;
+
+		inorder(root->left, low, high, sum);
+		if (root->val >= low and root->val <= high)
+			sum += root->val;
+		inorder(root->right, low, high, sum);
+
+		return;
+	}
+
+public:
+	int rangeSumBST(TreeNode* root, int low, int high) {
+		// Ek simple inorder kr denge toh ho jaega
+		int sum = 0;
+		inorder(root, low, high, sum);
+
+		return sum;
+	}
+};
