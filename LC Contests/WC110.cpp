@@ -69,3 +69,39 @@ public:
 		return sum;
 	}
 };
+
+
+// 3. 939. Minimum Area Rectangle
+int minAreaRect(vector<vector<int>>& points) {
+
+	unordered_map<int, set<int> > p;
+
+	for (int i = 0; i < points.size(); i++) {
+		p[points[i][0]].insert(points[i][1]);
+	}
+
+	int res = INT_MAX;
+	for (auto f : p) {
+		for (auto s : p) {
+
+			if (f.first == s.first)
+				continue;
+
+			vector<int> v(f.second.size());
+			auto it = set_intersection(f.second.begin(), f.second.end(), s.second.begin(), s.second.end(), v.begin());
+
+			int size = it - v.begin();
+			if (size <= 1)
+				continue;
+
+			int minel = INT_MAX;
+			for (int i = 0; i < size - 1; i++) {
+				minel = min(minel, v[i + 1] - v[i]);
+			}
+
+			res = min(res, minel * abs(f.first - s.first));
+		}
+	}
+
+	return res == INT_MAX ? 0 : res;
+}
