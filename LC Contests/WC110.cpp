@@ -105,3 +105,36 @@ int minAreaRect(vector<vector<int>>& points) {
 
 	return res == INT_MAX ? 0 : res;
 }
+
+
+// 4. Distinct Subseq II
+int distinctSubseqII(string s) {
+	// Recurrance -> generate all subsequences
+	// But, if there is a same element, then uss position pe we can
+	// choose the last occured instead of the earlier ones
+
+	int n = s.size();
+	vector<int> dp(n + 1, 0);
+	dp[0] = 1; // empty se start
+
+	int mod = 1e9 + 7;
+
+	vector<int> last(26, -1);
+
+	for (int i = 0; i < n; i++) {
+		int dig = s[i] - 'a';
+
+		dp[i + 1] = dp[i] * 2 % mod;
+
+		// Check if this letter was occured before?
+		if (last[dig] >= 0) {
+			dp[i + 1] -= dp[last[dig]];
+		}
+
+		dp[i + 1] %= mod;
+		last[dig] = i;
+	}
+
+	dp[n]--; // remove the empty subseq
+	return (dp[n] + mod) % mod;
+}
