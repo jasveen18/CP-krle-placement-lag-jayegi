@@ -10,37 +10,43 @@
 // 3. 2 Coloring problem hai.
 
 // ** DFS ** //
-bool isBipartiteDFS(vector<vector<int>> &graph) {
-	int V = graph.size();
-	// 0 -> not visited, 1 - color1, 2 - color2
-	vector<int> state(V, 0);
+bool dfs(vector<vector<int>>& graph, vector<int> &state, int src, int color) {
+	state[src] = color;
 
-	bool ans = true;
+	for (auto nbr : graph[src]) {
+		if (state[nbr] == (3 - color))
+			continue;
 
-	// Traverse through all nodes to check for disconnected comps
+		if (state[nbr] == color)
+			return false;
+
+		bool ans = dfs(graph, state, nbr, 3 - color);
+		if (ans == false)
+			return false;
+	}
+
+	return true;
+}
+
+bool isBipartite(vector<vector<int>>& graph) {
+	// Given an adj list
+	// For checking is graph is bipartite, we can do 2-coloring problem
+
+	int n = graph.size();
+	vector<int> state(n, 0); // 0 -> not visited, 1 -> color 1, 2 -> color 2
+
 	for (int i = 0; i < n; i++) {
 		if (state[i] == 0) {
-			ans = ans and isBipartiteDFSHelper(graph, i, -1, 1, state);
+			bool ans = dfs(graph, state, i, 1);
+
+			if (ans == false)
+				return false;
 		}
 	}
 
-	return ans;
-}
-
-
-bool isBipartiteDFSHelper(vector<vector<int>> &graph, int node, int parent, int color, vector<int> &state) {
-	state[node] = color;
-
-	for (auto nbr : graph[node]) {                            // Kind of complement of 1 and 2. 2 hoga toh 1 ban jayega and vice.
-		bool subGraphSolve = isBipartiteDFSHelper(graph, nbr, node, (3 - color), state);
-
-		if (subGraphSolve == false)
-			return false;
-
-		// If visited hai and color bhi same as current node
-		else if (color == state[nbr])
-			return false;
-	}
+	for (auto st : state)
+		cout << st << " ";
+	cout << endl;
 
 	return true;
 }
