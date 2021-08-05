@@ -1,4 +1,4 @@
-// 1.
+// 1. 949. Largest Time for Given Digits
 string largestTimeFromDigits(vector<int>& arr) {
 	int resh = 0, resm = 0;
 	vector<int> res;
@@ -31,3 +31,23 @@ string largestTimeFromDigits(vector<int>& arr) {
 	string strRes = to_string(res[0]) + to_string(res[1]) + ":" + to_string(res[2]) + to_string(res[3]);
 	return strRes;
 }
+
+// 2.951. Flip Equivalent Binary Trees
+bool flipEquiv(TreeNode* root1, TreeNode* root2) {
+	if (root1 == NULL and root2 == NULL)
+		return true;
+
+	if (root1 == NULL or root2 == NULL)
+		return false;
+
+	if (root1->val != root2->val)
+		return false;
+
+	bool one = flipEquiv(root1->left, root2->left) and flipEquiv(root1->right, root2->right);
+	bool two = flipEquiv(root1->left, root2->right) and flipEquiv(root1->right, root2->left);
+
+	return one | two;
+}
+
+
+// 3.
