@@ -50,4 +50,28 @@ bool flipEquiv(TreeNode* root1, TreeNode* root2) {
 }
 
 
-// 3.
+// 3.950. Reveal Cards In Increasing Order
+vector<int> deckRevealedIncreasing(vector<int>& deck) {
+	int n = deck.size();
+	sort(deck.begin(), deck.end());
+
+	// Positions
+	list<int> l(n);
+	iota(l.begin(), l.end(), 0);
+
+	vector<int> res(n);
+	auto lp = l.begin();
+
+	for (int i = 0, skip = 0; l.empty() == false; skip = !skip) {
+		if (lp == l.end()) lp = l.begin();
+
+		if (skip) ++lp;
+
+		else {
+			res[*lp] = deck[i++];
+			l.erase(lp++);
+		}
+	}
+
+	return res;
+}
