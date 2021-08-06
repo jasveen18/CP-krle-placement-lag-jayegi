@@ -32,3 +32,48 @@ bool isAlienSorted(vector<string>& words, string order) {
 
 	return true;
 }
+
+
+// 2.954. Array of Doubled Pairs
+bool canReorderDoubled(vector<int>& arr) {
+	bool can = true;
+	map<int, int> pos;
+	map<int, int> neg;
+
+	for (auto el : arr) {
+		if (el < 0)
+			neg[-el]++;
+		else
+			pos[el]++;
+	}
+
+	if (pos[0] & 1)
+		return false;
+
+	pos[0] = 0;
+	for (auto el : pos) {
+		// cout<<el.first<<" "<<el.second<<endl;
+		while (el.second--) {
+			int curr = el.first;
+
+			if (pos[curr * 2] == 0)
+				return false;
+
+			pos[curr * 2]--;
+		}
+	}
+
+	for (auto el : neg) {
+		// cout<<el.first<<" "<<el.second<<endl;
+		while (el.second--) {
+			int curr = el.first;
+
+			if (neg[curr * 2] == 0)
+				return false;
+
+			neg[curr * 2]--;
+		}
+	}
+
+	return true;
+}
