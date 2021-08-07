@@ -41,3 +41,30 @@ bool isCompleteTree(TreeNode* root) {
 
 	return true;
 }
+
+
+// 2. 957. Prison Cells After N Days
+vector<int> prisonAfterNDays(vector<int>& cells, int n) {
+
+	vector<vector<int> >res;
+
+	int cycle = (n % 14) == 0 ? (14) : (n % 14);
+
+	for (int i = 0; i < cycle; i++) {
+		vector<int> curr(cells.begin(), cells.end());
+		for (int i = 1; i < cells.size() - 1; i++) {
+			if (cells[i - 1] == cells[i + 1])
+				curr[i] = 1;
+			else
+				curr[i] = 0;
+		}
+
+		curr[0] = 0; curr[cells.size() - 1] = 0;
+		cells = curr;
+		res.push_back(curr);
+	}
+
+	if (res.size() == 0)
+		return cells;
+	return res[res.size() - 1];
+}
