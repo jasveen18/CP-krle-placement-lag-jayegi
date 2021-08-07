@@ -34,54 +34,53 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-int solve(vector<vector<int> > &dp) {
-	int res = 0;
-	int n = dp.size(), m = dp[0].size();
+vector<int> findSum(int root, vector<vector<int>> &adjList, vector<int> nodes, int &res) {
+	// Invalid node
+	if (root >= nodes.size()) {
+		return {0};
+	}
 
-	for (int i = 1; i < n; i++) {
-		for (int j = 1; j < m; j++) {
-			dp[i][j] = min(min(dp[i][j], dp[i - 1][j - 1]), min(dp[i][j - 1], dp[i - 1][j])) + 1;
-			res = max(res, dp[i][j]);
+	// check for leaf
+	if (adjList[root].size() == 0)
+		return {nodes[root]};
+
+	vector<vector<int>> prodHere;
+	for (auto child : adjList[root]) {
+		vector<int> childProd = findSum(child, adjList, nodes, res);
+		prodHere.push_back(childProd);
+	}
+
+	vector<int> flatten;
+	for (auto a : prodHere) {
+		for (auto b : a) {
+			flatten.push_back(nodes[root] * b);
 		}
 	}
 
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			cout << dp[i][j] << " ";
+	for (int i = 0; i < flatten.size(); i++) {
+		for (int j = i + 1; j < flatten.size(); j++) {
+			res = max(res, flatten[i] * flatten[j]);
 		}
-		cout << endl;
 	}
 
-	return res * res;
+	return flatten;
 }
 
-int evalRPN(vector<string> A) {
-	stack<int> st;
-	int res = 0;
+int solve(vector<int> nodes, vector<vector<int>> edges) {
+	int n = nodes.size();
 
-	for (int i = 0; i < A.size(); i++) {
-		if ((A[i][0] == '+' or A[i][0] == '-' or A[i][0] == '*' or A[i][0] == '/') and A[i].size() == 1) {
-			int first = st.top(); st.pop();
-			int second = st.top(); st.pop();
-			int res;
-			if (A[i][0] == '+')
-				res = second + first;
-			if (A[i][0] == '-')
-				res = second - first;
-			if (A[i][0] == '*')
-				res = second * first;
-			if (A[i][0] == '/')
-				res = second / first;
-
-			st.push(res);
-		} else {
-			st.push(stoi(A[i]));
-		}
+	// make the adj list
+	vector<vector<int>> adjList(n);
+	for (auto edge : edges) {
+		adjList[edge[0] - 1].push_back(edge[1] - 1);
 	}
 
-	return st.top();
-}
+	// recursive function to find max product
+	int res = INT_MIN;
+	findSum(0, adjList, nodes, res);
 
+	return res;
+}
 
 
 int main() {
@@ -91,6 +90,22 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << evalRPN({"-1"});
+	int size;
+	cin >> size;
+	vector<int> nodes(size);
+
+	for (int i = 0; i < size; i++)
+		cin >> nodes[i];
+
+	int numedges, col; cin >> numedges >> col;
+	vector<vector<int>> edges;
+
+	for (int i = 0; i < numedges; i++) {
+		int u, v; cin >> u >> v;
+		edges.push_back({u, v});
+	}
+
+	cout << solve(nodes, edges);
+
 	return 0;
 }
