@@ -77,3 +77,27 @@ bool canReorderDoubled(vector<int>& arr) {
 
 	return true;
 }
+
+
+// 3.955. Delete Columns to Make Sorted II
+int minDeletionSize(vector<string>& strs) {
+	unordered_set<int> idx;
+
+	for (int i = 1; i < strs.size(); i++) {
+		for (int k = 0; k < strs[i].size(); k++) {
+
+			// Equal
+			if (idx.count(k) != 0 or strs[i - 1][k] == strs[i][k])
+				continue;
+
+			if (strs[i - 1][k] > strs[i][k]) {
+				idx.insert(k), i = 0; // This row needs to be deleted and we have to search again
+			}
+
+			// In instance of greater or smaller we don't need to check ahead
+			break;
+		}
+	}
+
+	return idx.size();
+}
