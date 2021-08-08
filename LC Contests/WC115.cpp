@@ -68,3 +68,39 @@ vector<int> prisonAfterNDays(vector<int>& cells, int n) {
 		return cells;
 	return res[res.size() - 1];
 }
+
+// 3.959. Regions Cut By Slashes
+int dfs(vector<vector<int>> &grid, int i, int j) {
+	if (i < 0 or j < 0 or i >= grid.size() or j >= grid.size() or grid[i][j] != 0)
+		return 0;
+
+	grid[i][j] = 1;
+	return 1 + dfs(grid, i + 1, j) + dfs(grid, i, j + 1) + dfs(grid, i - 1, j) + dfs(grid, i, j - 1);
+}
+
+int regionsBySlashes(vector<string>& grid) {
+	int n = grid.size(), region = 0;
+
+	vector<vector<int>> newGrid(n * 3, vector<int> (n * 3, 0));
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+
+			if (grid[i][j] == '/') {
+				newGrid[i * 3][j * 3 + 2] = newGrid[i * 3 + 1][j * 3 + 1] = newGrid[i * 3 + 2][j * 3] = 1;
+			}
+
+			if (grid[i][j] == '\\') {
+				newGrid[i * 3][j * 3] = newGrid[i * 3 + 1][j * 3 + 1] = newGrid[i * 3 + 2][j * 3 + 2]  = 1;
+			}
+		}
+	}
+
+	for (int i = 0; i < n * 3; i++) {
+		for (int j = 0; j < n * 3; j++) {
+			region += dfs(newGrid, i, j) ? 1 : 0;
+		}
+	}
+
+	return region;
+}
