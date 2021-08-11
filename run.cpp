@@ -34,52 +34,35 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-vector<int> findSum(int root, vector<vector<int>> &adjList, vector<int> nodes, int &res) {
-	// Invalid node
-	if (root >= nodes.size()) {
-		return {0};
-	}
 
-	// check for leaf
-	if (adjList[root].size() == 0)
-		return {nodes[root]};
 
-	vector<vector<int>> prodHere;
-	for (auto child : adjList[root]) {
-		vector<int> childProd = findSum(child, adjList, nodes, res);
-		prodHere.push_back(childProd);
-	}
 
-	vector<int> flatten;
-	for (auto a : prodHere) {
-		for (auto b : a) {
-			flatten.push_back(nodes[root] * b);
+vector<int> calc(int n) {
+	vector<int> phi(n + 1, 0);
+	phi[0] = 0;
+	phi[1] = 1;
+	for (int i = 2; i <= n; i++)
+		phi[i] = i;
+
+	for (int i = 2; i <= n; i++) {
+		if (phi[i] == i) {
+			for (int j = i; j <= n; j += i)
+				phi[j] -= phi[j] / i;
 		}
 	}
 
-	for (int i = 0; i < flatten.size(); i++) {
-		for (int j = i + 1; j < flatten.size(); j++) {
-			res = max(res, flatten[i] * flatten[j]);
-		}
-	}
-
-	return flatten;
+	return phi;
 }
 
-int solve(vector<int> nodes, vector<vector<int>> edges) {
-	int n = nodes.size();
+vector<int> coprimeCount(vector<int> A) {
+	vector<int> res = calc(100000);
 
-	// make the adj list
-	vector<vector<int>> adjList(n);
-	for (auto edge : edges) {
-		adjList[edge[0] - 1].push_back(edge[1] - 1);
+	vector<int> ans;
+	for (int i = 0; i < A.size(); i++) {
+		ans.push_back(res[A[i]]);
 	}
 
-	// recursive function to find max product
-	int res = INT_MIN;
-	findSum(0, adjList, nodes, res);
-
-	return res;
+	return ans;
 }
 
 
@@ -90,22 +73,11 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int size;
-	cin >> size;
-	vector<int> nodes(size);
+	vector<int> res = coprimeCount({5, 8, 14});
 
-	for (int i = 0; i < size; i++)
-		cin >> nodes[i];
-
-	int numedges, col; cin >> numedges >> col;
-	vector<vector<int>> edges;
-
-	for (int i = 0; i < numedges; i++) {
-		int u, v; cin >> u >> v;
-		edges.push_back({u, v});
-	}
-
-	cout << solve(nodes, edges);
+	for (int i = 0; i < res.size(); i++)
+		cout << res[i] << " ";
+	cout << endl;
 
 	return 0;
 }
