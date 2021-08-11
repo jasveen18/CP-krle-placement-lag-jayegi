@@ -11,4 +11,23 @@ int repeatedNTimes(vector<int>& A) {
 	return A[A.size() - 1];
 }
 
-// 2.
+// 2. 962. Maximum Width Ramp
+int maxWidthRamp(vector<int>& nums) {
+	vector<int> mark(5 * 10000 + 5, -1);
+	int n = nums.size();
+
+	for (int i = n - 1; i >= 0; i--) {
+		int idx = i;
+		int j = nums[i];
+		while (j >= 0 and mark[j] == -1) {
+			mark[j--] = idx;
+		}
+	}
+
+	int res = INT_MIN;
+	for (int i = 0; i < n; i++) {
+		res = max(res, (mark[nums[i]] - i));
+	}
+
+	return res;
+}
