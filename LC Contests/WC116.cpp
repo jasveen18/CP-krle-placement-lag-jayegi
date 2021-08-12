@@ -31,3 +31,5 @@ int maxWidthRamp(vector<int>& nums) {
 
 	return res;
 }
+
+// 3. 963. Minimum Area Rectangle II

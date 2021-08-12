@@ -35,34 +35,25 @@ const double PI = 3.141592653589793238463;
 /*******************************/
 
 
+vector<int> parents;
 
+int findSet(int i, int parent[]) {
+	if (parent[i] == -1)
+		return parent[i] = i;
 
-vector<int> calc(int n) {
-	vector<int> phi(n + 1, 0);
-	phi[0] = 0;
-	phi[1] = 1;
-	for (int i = 2; i <= n; i++)
-		phi[i] = i;
-
-	for (int i = 2; i <= n; i++) {
-		if (phi[i] == i) {
-			for (int j = i; j <= n; j += i)
-				phi[j] -= phi[j] / i;
-		}
-	}
-
-	return phi;
+	return parent[i] = findSet(parent[i], parent);
 }
 
-vector<int> coprimeCount(vector<int> A) {
-	vector<int> res = calc(100000);
 
-	vector<int> ans;
-	for (int i = 0; i < A.size(); i++) {
-		ans.push_back(res[A[i]]);
-	}
+bool unionSet(int x, int y, int parent[], int rank[]) {
+	int s1 = findSet(x);
+	int s2 = findSet(y);
 
-	return ans;
+	if (s1 == s2)
+		return true;
+
+	parent[s1] = s2;
+	return false;
 }
 
 
@@ -73,11 +64,29 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	vector<int> res = coprimeCount({5, 8, 14});
+	int n, m; cin >> n >> m;
+	vector<vector<int>> adj(n);
 
-	for (int i = 0; i < res.size(); i++)
-		cout << res[i] << " ";
-	cout << endl;
+	for (int i = 0; i < m; i++) {
+		int u, v; cin >> u >> v;
+
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+
+
+	// No edge
+	cout << (n) * (n - 1) / 2 << endl;
+
+	// now make DSU
+	parents = vector<int> (n, -1);
+
+	for (int i = m - 1; i >= 0; i--) {
+		int u =
+	}
 
 	return 0;
 }
+
+
+
