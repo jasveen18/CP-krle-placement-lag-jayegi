@@ -34,29 +34,6 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
-
-vector<int> parents;
-
-int findSet(int i, int parent[]) {
-	if (parent[i] == -1)
-		return parent[i] = i;
-
-	return parent[i] = findSet(parent[i], parent);
-}
-
-
-bool unionSet(int x, int y, int parent[], int rank[]) {
-	int s1 = findSet(x);
-	int s2 = findSet(y);
-
-	if (s1 == s2)
-		return true;
-
-	parent[s1] = s2;
-	return false;
-}
-
-
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -64,28 +41,9 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	int n, m; cin >> n >> m;
-	vector<vector<int>> adj(n);
-
-	for (int i = 0; i < m; i++) {
-		int u, v; cin >> u >> v;
-
-		adj[u].push_back(v);
-		adj[v].push_back(u);
-	}
-
-
-	// No edge
-	cout << (n) * (n - 1) / 2 << endl;
-
-	// now make DSU
-	parents = vector<int> (n, -1);
-
-	for (int i = m - 1; i >= 0; i--) {
-		int u =
-	}
 
 	return 0;
+
 }
 
 
