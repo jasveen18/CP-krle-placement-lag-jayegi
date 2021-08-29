@@ -9,4 +9,6 @@ let reverseArray = function (nums) {
     }
 };
 
-console.log(reverseArray([1, 2, 3, 4]));
+arr = [1, 2, 3, 4];
+reverseArray(arr);
+console.log(arr); // [4, 3, 2, 1]
