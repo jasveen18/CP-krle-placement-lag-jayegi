@@ -34,6 +34,32 @@ const double PI = 3.141592653589793238463;
 /**** Your code goes here - ****/
 /*******************************/
 
+
+// class test {
+// 	int n;
+// 	float f;
+// 	double g;
+// public:
+// 	test (int nn, float ff, double gg) {
+// 		n = nn;
+// 		f = ff;
+// 		g == gg;
+// 	}
+
+// 	void display(void) {
+// 		cout << n << " " << f << " " << g;
+// 	}
+
+// 	void operator -  {};
+// };
+
+// void test::operator-(void) {
+// 	n *= -1;
+// 	f *= -1;
+// 	g *= -1;
+// }
+
+
 int main() {
 	blink
 #ifndef ONLINE_JUDGE
@@ -41,9 +67,14 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
+	// test t1 (10, 15.0f, 36.3);
+	// --t1;
+	// t1.display();
+
+
+
 
 	return 0;
-
 }
 
 
