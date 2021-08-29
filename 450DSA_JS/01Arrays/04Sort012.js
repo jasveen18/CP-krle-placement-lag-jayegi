@@ -26,3 +26,7 @@ let sortColors = function (nums) {
 
     return;
 };
+
+arr = [0, 2, 2, 1, 0, 1, 0, 0, 2];
+sortColors(arr);
+console.log(arr); // [0, 0, 0, 0, 1, 1, 2, 2, 2]
